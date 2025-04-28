@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Discord } from "lucide-react";
+import { Menu, X, MessageSquare } from "lucide-react";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -36,7 +36,7 @@ const NavBar = () => {
               Privacy
             </Link>
             <Button className="border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20 transition-colors">
-              <Discord className="w-4 h-4 mr-2" />
+              <MessageSquare className="w-4 h-4 mr-2" />
               <span>Coming Soon</span>
             </Button>
           </div>
@@ -91,7 +91,7 @@ const NavBar = () => {
             </Link>
             <div className="px-3 py-2">
               <Button className="w-full border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20">
-                <Discord className="w-4 h-4 mr-2" />
+                <MessageSquare className="w-4 h-4 mr-2" />
                 <span>Coming Soon</span>
               </Button>
             </div>

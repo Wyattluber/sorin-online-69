@@ -1,7 +1,8 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Lock, Users, Settings, Construction } from "lucide-react";
+import { Shield, Lock, Users, Settings, Construction, Copy, Check } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 const features = [
   {
@@ -27,6 +28,22 @@ const features = [
 ];
 
 const Features = () => {
+  const [copied, setCopied] = useState(false);
+  
+  const placeholderScript = 'loadstring(game:HttpGet("https://raw.githubusercontent.com/sorin-dev/sorin/main/script", true))()';
+  
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(placeholderScript).then(() => {
+      setCopied(true);
+      toast({
+        title: "Code kopiert",
+        description: "Der Platzhalter-Script wurde in die Zwischenablage kopiert",
+        duration: 3000,
+      });
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
   return (
     <div id="features" className="sorin-section py-24 relative">
       {/* Development Notice Banner */}
@@ -76,18 +93,36 @@ const Features = () => {
           ))}
         </div>
         
-        {/* Script Section - Modified to indicate "Coming Soon" */}
+        {/* Script Section - Placeholder with working copy button */}
         <div className="mt-16 text-center">
           <div className="inline-block sorin-border bg-sorin-primary/30 backdrop-blur-sm rounded-lg p-8 max-w-3xl">
-            <h3 className="text-xl font-semibold mb-4 text-sorin-text">Sorin Script <span className="text-sorin-accent text-sm">(Coming Soon)</span></h3>
-            <div className="bg-sorin-dark/80 p-4 rounded text-left font-mono text-sm overflow-x-auto opacity-70">
+            <h3 className="text-xl font-semibold mb-4 text-sorin-text">
+              Sorin Script <span className="text-sorin-accent text-sm">(Platzhalter)</span>
+            </h3>
+            <div className="bg-sorin-dark/80 p-4 rounded text-left font-mono text-sm overflow-x-auto relative group">
               <code className="text-sorin-accent">
-                loadstring(game:HttpGet("https://raw.githubusercontent.com/sorin-dev/sorin/main/script", true))()
+                {placeholderScript}
               </code>
             </div>
-            <button disabled className="mt-4 px-4 py-2 bg-sorin-primary/50 border border-sorin-accent/30 rounded text-sorin-text/50 text-sm cursor-not-allowed">
-              In Entwicklung
+            <button 
+              onClick={copyToClipboard} 
+              className="mt-4 px-4 py-2 bg-sorin-primary hover:bg-sorin-primary/80 border border-sorin-accent/30 rounded text-sorin-text text-sm flex items-center justify-center mx-auto gap-2"
+            >
+              {copied ? (
+                <>
+                  <Check className="h-4 w-4" />
+                  <span>Kopiert</span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-4 w-4" />
+                  <span>Kopieren</span>
+                </>
+              )}
             </button>
+            <p className="mt-4 text-sm text-sorin-muted">
+              Dies ist ein Platzhalter-Script. Der echte Script wird bald verfügbar sein.
+            </p>
           </div>
         </div>
       </div>

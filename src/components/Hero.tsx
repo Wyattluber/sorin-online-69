@@ -1,6 +1,5 @@
 
 import React from "react";
-import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
@@ -10,27 +9,41 @@ const Hero = () => {
       <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-sorin-dark to-transparent"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="animate-float">
+        <div className="animate-float mb-12">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sorin-accent to-sorin-highlight mb-6">
             SORIN
           </h1>
           <p className="text-xl sm:text-2xl md:text-3xl font-medium text-sorin-text/90 mb-8">
-            Die ultimative <span className="text-sorin-highlight">Exploiting-Lösung</span> aus einer anderen Dimension
+            Die ultimative <span className="text-sorin-highlight">Roblox-Exploiting-Lösung</span> aus einer anderen Dimension
           </p>
         </div>
         
         <p className="text-sorin-muted max-w-2xl mx-auto mb-12">
-          Entdecke eine Leistungsfähigkeit jenseits des Bekannten. Sorin ist nicht nur ein Skript – es ist die Synthese aus technologischer Perfektion und kosmischer Präzision.
+          Entdecke eine Leistungsfähigkeit jenseits des Bekannten. Sorin ist nicht nur ein Skript – es ist die Synthese aus technologischer Perfektion und kosmischer Präzision für deine Roblox-Erfahrung.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button className="sorin-button group">
-            Download Starten
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-          <Button variant="outline" className="border-sorin-accent/30 text-sorin-text hover:bg-sorin-accent/10">
-            Features Entdecken
-          </Button>
+        <div className="mt-10">
+          <div className="inline-block sorin-border bg-sorin-primary/30 backdrop-blur-sm rounded-lg p-8 max-w-3xl">
+            <h3 className="text-xl font-semibold mb-4 text-sorin-text">Sorin Script</h3>
+            <div className="bg-sorin-dark/80 p-4 rounded text-left font-mono text-sm overflow-x-auto">
+              <code className="text-sorin-accent">
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/sorin-dev/sorin/main/script", true))()
+              </code>
+            </div>
+            <button className="mt-4 px-4 py-2 bg-sorin-primary hover:bg-sorin-primary/80 border border-sorin-accent/30 rounded text-sorin-text text-sm">
+              Kopieren
+            </button>
+            <p className="mt-4 text-sm text-sorin-muted">
+              Kopiere den Code und füge ihn in deinen Executor ein
+            </p>
+          </div>
+          
+          <div className="mt-16 flex justify-center">
+            <a href="#features" className="flex items-center text-sorin-accent hover:text-sorin-highlight transition-colors">
+              <span className="mr-2">Entdecke die Features</span>
+              <ArrowRight className="h-4 w-4 animate-pulse" />
+            </a>
+          </div>
         </div>
       </div>
     </div>

@@ -93,7 +93,7 @@ const Features = () => {
           ))}
         </div>
         
-        {/* Script Section - Placeholder with working copy button */}
+        {/* Script Placeholder Section */}
         <div className="mt-16 text-center">
           <div className="inline-block sorin-border bg-sorin-primary/30 backdrop-blur-sm rounded-lg p-8 max-w-3xl">
             <h3 className="text-xl font-semibold mb-4 text-sorin-text">

@@ -1,18 +1,35 @@
 
 import React from "react";
 import { ArrowRight } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Hero = () => {
+  const isMobile = useIsMobile();
+  
   return (
     <div className="sorin-section flex items-center justify-center min-h-screen pt-16 pb-32">
       <div className="absolute inset-0 bg-gradient-radial from-sorin-accent/5 to-transparent"></div>
       <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-sorin-dark to-transparent"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="animate-float mb-12">
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-sorin-accent to-sorin-highlight mb-6">
-            SORIN
-          </h1>
+        {/* Logo Image Section */}
+        <div className="mb-8 flex justify-center">
+          {isMobile ? (
+            <img
+              src="/lovable-uploads/52b3b98a-55b1-4524-8434-c0c323b708a3.png"
+              alt="Sorin Logo"
+              className="h-64 w-auto animate-float"
+            />
+          ) : (
+            <img
+              src="/lovable-uploads/74f89b9e-5961-43ee-864e-dfa21ab29871.png"
+              alt="Sorin Logo"
+              className="h-48 w-auto animate-float"
+            />
+          )}
+        </div>
+        
+        <div className="mb-12">
           <p className="text-xl sm:text-2xl md:text-3xl font-medium text-sorin-text/90 mb-8">
             Die ultimative <span className="text-sorin-highlight">Roblox-Exploiting-Lösung</span> aus einer anderen Dimension
           </p>

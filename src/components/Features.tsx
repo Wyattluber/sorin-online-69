@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Shield, Lock, Users, Settings } from "lucide-react";
+import { Shield, Lock, Users, Settings, Construction } from "lucide-react";
 
 const features = [
   {
@@ -29,6 +29,28 @@ const features = [
 const Features = () => {
   return (
     <div id="features" className="sorin-section py-24 relative">
+      {/* Development Notice Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-16">
+        <div className="bg-[#1A1F2C]/80 border-2 border-sorin-accent/50 backdrop-blur-sm rounded-lg p-6 shadow-lg shadow-sorin-accent/10">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <div className="bg-sorin-accent/20 p-3 rounded-full">
+              <Construction className="h-10 w-10 text-sorin-highlight animate-pulse" />
+            </div>
+            <div className="text-center md:text-left">
+              <h2 className="text-2xl md:text-3xl font-bold text-sorin-highlight sorin-glow mb-2">
+                Sorin ist derzeit nicht verfügbar
+              </h2>
+              <p className="text-sorin-text text-lg mb-2">
+                Unser fortschrittliches Roblox-Script befindet sich noch in der Entwicklungsphase.
+              </p>
+              <p className="text-sorin-muted">
+                Wir arbeiten mit Hochdruck daran, Sorin bald für dich verfügbar zu machen. Bleib dran für Updates!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl font-bold text-sorin-highlight sorin-glow mb-4">Überlegene Funktionen</h2>
@@ -37,6 +59,7 @@ const Features = () => {
           </p>
         </div>
         
+        {/* Features Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {features.map((feature, index) => (
             <Card key={index} className="bg-sorin-primary/50 backdrop-blur-sm border-sorin-accent/20 hover:border-sorin-accent/40 transition-all duration-300 hover:shadow-md hover:shadow-sorin-accent/10">
@@ -53,16 +76,17 @@ const Features = () => {
           ))}
         </div>
         
+        {/* Script Section - Modified to indicate "Coming Soon" */}
         <div className="mt-16 text-center">
           <div className="inline-block sorin-border bg-sorin-primary/30 backdrop-blur-sm rounded-lg p-8 max-w-3xl">
-            <h3 className="text-xl font-semibold mb-4 text-sorin-text">Sorin Script</h3>
-            <div className="bg-sorin-dark/80 p-4 rounded text-left font-mono text-sm overflow-x-auto">
+            <h3 className="text-xl font-semibold mb-4 text-sorin-text">Sorin Script <span className="text-sorin-accent text-sm">(Coming Soon)</span></h3>
+            <div className="bg-sorin-dark/80 p-4 rounded text-left font-mono text-sm overflow-x-auto opacity-70">
               <code className="text-sorin-accent">
                 loadstring(game:HttpGet("https://raw.githubusercontent.com/sorin-dev/sorin/main/script", true))()
               </code>
             </div>
-            <button className="mt-4 px-4 py-2 bg-sorin-primary hover:bg-sorin-primary/80 border border-sorin-accent/30 rounded text-sorin-text text-sm">
-              Kopieren
+            <button disabled className="mt-4 px-4 py-2 bg-sorin-primary/50 border border-sorin-accent/30 rounded text-sorin-text/50 text-sm cursor-not-allowed">
+              In Entwicklung
             </button>
           </div>
         </div>

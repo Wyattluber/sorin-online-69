@@ -6,16 +6,16 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   {
-    question: "Was macht Sorin besonders?",
-    answer: "Sorin ist nicht nur ein gewöhnliches Roblox-Skript. Es wurde mit fortschrittlichen Algorithmen entwickelt, die Leistung, Präzision und Zuverlässigkeit auf ein neues Niveau heben. Seine überlegene Architektur ermöglicht Funktionen, die mit herkömmlichen Lösungen nicht möglich sind."
+    question: "Was ist Sorin?",
+    answer: "Sorin ist ein erweitertes Script für Emergency Hamburg, das dir spezielle Spielfunktionen und Vorteile freischaltet.Damit erhältst du Zugriff auf exklusive Befehle und Features, die dir im Einsatz einen klaren Vorteil verschaffen – ob bei der Koordination, Reaktion oder taktischen Planung."
   },
   {
     question: "Ist Sorin sicher zu verwenden?",
-    answer: "Absolute Sicherheit ist ein Grundprinzip von Sorin. Das Skript nutzt mehrschichtige Verschlüsselungstechnologien und fortschrittliche Anti-Erkennungsmechanismen, um deine Aktivitäten zu schützen und unsichtbar zu bleiben."
+    answer: "Sorin wurde entwickelt, um dir in Emergency Hamburg auf Roblox neue Funktionen und Vorteile bereitzustellen – mit besonderem Fokus auf Schutz vor Erkennung.Das Script nutzt Methoden wie Code-Verschleierung und sichere Aufrufe, um möglichst unauffällig zu bleiben.Trotz aller Schutzmaßnahmen kann niemals völlige Sicherheit garantiert werden: Es besteht immer das Risiko, dass Spielmoderatoren oder automatische Systeme Eingriffe erkennen."
   },
   {
     question: "Wie erhalte ich Zugang zu Sorin?",
-    answer: "Sorin ist exklusiv und nur für ausgewählte Benutzer verfügbar. Der Zugang wird nach einem strengen Auswahlverfahren gewährt, um die Qualität und Exklusivität des Dienstes zu gewährleisten."
+    answer: "Um Sorin zu nutzen, musst du zunächst den offiziellen Loadstring in deinen Executor laden. Beim ersten Start wirst du aufgefordert, einen persönlichen Key zu generieren. Nach erfolgreicher Verifizierung wird der Zugriff auf alle Funktionen freigeschaltet."
   },
   {
     question: "Wird Sorin regelmäßig aktualisiert?",
@@ -23,27 +23,19 @@ const faqs = [
   },
   {
     question: "Bietet Sorin technischen Support?",
-    answer: "Benutzer von Sorin erhalten Zugang zu einem exklusiven Support-System, das schnelle Hilfe und Lösungen für jede Herausforderung bietet. Unser Support-Team ist rund um die Uhr verfügbar."
+    answer: "Benutzer von Sorin erhalten Zugang zu unserem Discord Support-System, das schnelle Hilfe und Lösungen für jede Herausforderung bietet."
   },
   {
     question: "Welche Roblox-Spiele werden unterstützt?",
-    answer: "Sorin wurde entwickelt, um mit einer breiten Palette von Roblox-Spielen zu funktionieren. Die adaptive Technologie ermöglicht eine nahtlose Integration in die meisten populären Titel und wird ständig erweitert."
+    answer: "Sorin ist speziell auf Emergency Hamburg ausgerichtet, um dir stets aktuelle Features und Verbesserungen bieten zu können. Durch diese Fokussierung können Updates besonders schnell bereitgestellt und neue Funktionen zeitnah integriert werden."
   },
   {
     question: "Benötige ich einen speziellen Executor für Sorin?",
-    answer: "Sorin funktioniert mit den meisten gängigen Roblox-Executors. Für optimale Leistung empfehlen wir jedoch Executors der Premium-Klasse, die alle Funktionen von Sorin voll unterstützen."
+    answer: "Sorin funktioniert mit den meisten gängigen Roblox-Executors. Für optimale Leistung empfehlen wir jedoch Xeno, welcher alle Funktionen von Sorin voll unterstützen. Sollte"
   },
   {
     question: "Kann ich Sorin auf verschiedenen Geräten verwenden?",
     answer: "Aktuell ist Sorin hauptsächlich für Windows-PCs optimiert. Wir arbeiten jedoch an der Unterstützung weiterer Plattformen, um die Zugänglichkeit zu verbessern."
-  },
-  {
-    question: "Gibt es eine Community für Sorin-Benutzer?",
-    answer: "Ja, wir haben eine exklusive Discord-Community für alle Sorin-Benutzer. Dort kannst du dich mit anderen Nutzern austauschen, Hilfe erhalten und die neuesten Updates verfolgen. Der Link zum Discord wird bald verfügbar sein."
-  },
-  {
-    question: "Wie funktioniert das Scripting-System von Sorin?",
-    answer: "Sorin verfügt über ein fortschrittliches Scripting-System, das es dir ermöglicht, eigene Skripte zu erstellen und zu teilen. Die intuitive Benutzeroberfläche macht es auch für Anfänger zugänglich, während erfahrene Nutzer von den erweiterten Funktionen profitieren können."
   }
 ];
 

@@ -38,9 +38,12 @@ const Hero = () => {
           SORIN
         </h1>*/}
         
-        <p className="text-xl sm:text-2xl font-medium text-sorin-text/90 mb-8">
-  Das intergalaktische <span className="text-sorin-highlight">Roblox-Exploiting-Script</span>
-</p>
+        <div className="inline-block bg-white/10 backdrop-blur-sm rounded-lg px-6 py-4">
+  <p className="text-xl sm:text-2xl font-medium text-sorin-text/90">
+    Das intergalaktische <span className="text-sorin-highlight">Roblox-Exploiting-Script</span>
+  </p>
+</div>
+
 
         
         <div className="mt-10 flex justify-center">

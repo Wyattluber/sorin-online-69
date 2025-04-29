@@ -34,9 +34,9 @@ const Hero = () => {
       <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-sorin-dark to-transparent z-1"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-sorin-highlight sorin-glow mb-6">
+        {/*<h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-sorin-highlight sorin-glow mb-6">
           SORIN
-        </h1>
+        </h1>*/}
         
         <p className="text-xl sm:text-2xl font-medium text-sorin-text/90 mb-8">
           Die ultimative <span className="text-sorin-highlight">Roblox-Exploiting-Lösung</span>

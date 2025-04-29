@@ -8,57 +8,25 @@ import { Button } from "@/components/ui/button";
 
 const detailedFeatures = [
   {
-    title: "Überlegene Leistung",
-    description: "Das fortschrittlichste Skript seiner Klasse, entwickelt mit algorithmischer Perfektion.",
+    title: "Free to Use",
+    description: "Keine Paywall bei uns",
     details: [
-      "Hochoptimierte Ausführung für maximale Effizienz",
-      "Intelligente Anpassung an verschiedene Systemumgebungen",
-      "Minimaler Ressourcenverbrauch bei maximaler Leistung"
+      "Da wir am Anfang stehen, ist unser Angebot kostenlos",
+      "Möglicherweise kann man in Zukunft mit Sorin Plus von einigen Vorteilen wie ein No-Key-System profitieren",
     ]
   },
   {
-    title: "Kosmische Präzision",
-    description: "Erlebe eine beispiellose Genauigkeit, die selbst den anspruchsvollsten Anforderungen gerecht wird.",
+    title: "Support",
+    description: "Auf unserem eigenen Discord Server, steht dir unser Support immer zur Verfügung",
     details: [
-      "Pixelgenaue Interaktionen mit dynamischen Umgebungen",
-      "Präzises Timing für kritische Operationen",
-      "Konsistente Ergebnisse unter allen Bedingungen"
+      "Unser Discord ist derzeit noch in Entwicklung"
     ]
   },
   {
-    title: "Universelle Anpassung",
-    description: "Passt sich nahtlos an Veränderungen an - wie eine Entität aus einer höheren Dimension.",
+    title: "Regelmäßige Updates",
+    description: "Anpassung an Spieleupdates",
     details: [
-      "Automatische Anpassung an Systemupdates",
-      "Flexibles Verhalten in unvorhersehbaren Szenarien",
-      "Kompatibilität mit verschiedenen Konfigurationen"
-    ]
-  },
-  {
-    title: "Quantengeschwindigkeit",
-    description: "Reagiert mit einer Geschwindigkeit, die die Grenzen der wahrgenommenen Zeit überschreitet.",
-    details: [
-      "Blitzschnelle Reaktionszeit auf alle Events",
-      "Vorausschauende Verarbeitung für verzögerungsfreie Ausführung",
-      "Optimierte Code-Pfade für kritische Funktionen"
-    ]
-  },
-  {
-    title: "Kosmischer Schutz",
-    description: "Fortschrittliche Sicherheitsmaßnahmen, die deine Aktivitäten vor neugierigen Blicken schützen.",
-    details: [
-      "Mehrschichtige Verschlüsselungstechnologien",
-      "Unsichtbare Operation auf Systemebene",
-      "Selbstschützende Anti-Analyse-Mechanismen"
-    ]
-  },
-  {
-    title: "Dimensionsübergreifende Integration",
-    description: "Verbinde dich nahtlos mit zusätzlichen Diensten und erweitere deine Fähigkeiten.",
-    details: [
-      "Nahtlose Kommunikation mit externen Ressourcen",
-      "Modulare Architektur für einfache Erweiterbarkeit",
-      "API-Integration mit bestehenden Systemen"
+      "Wir versuchen immer so schnell wie möglich, das unser Script mit dem Game mithalten kann."
     ]
   }
 ];
@@ -101,7 +69,7 @@ const FeaturesPage = () => {
             </div>
             
             <div className="mt-16 text-center">
-              <Button className="sorin-button group">
+              <Button className="https://berlinrpvc.de">
                 Zugang Erhalten
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>

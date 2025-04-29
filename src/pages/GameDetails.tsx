@@ -207,11 +207,10 @@ const GameDetails = () => {
                       <div className="mt-8 border-t border-sorin-accent/10 pt-8">
                         <h2 className="text-xl font-semibold text-sorin-highlight mb-4">Features</h2>
                         <ul className="list-disc pl-5 space-y-2 text-sorin-text/90">
-                          <li>Automatisches Teleportieren zu Einsätzen</li>
-                          <li>ESP für aktive Einsätze</li>
-                          <li>Fahrzeug-Modifikationen für höhere Geschwindigkeit</li>
-                          <li>Admin-Befehle Umgehung</li>
-                          <li>Anti-Kick Schutz</li>
+                          <li>Teleportieren</li>
+                          <li>ESP</li>                        
+                          <li>Player Secure (Anti Taser und weiteres)</li>
+                          <li>Spielerstatistiken</li>
                         </ul>
                       </div>
                     </div>

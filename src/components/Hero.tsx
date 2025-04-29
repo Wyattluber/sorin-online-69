@@ -39,8 +39,9 @@ const Hero = () => {
         </h1>*/}
         
         <p className="text-xl sm:text-2xl font-medium text-sorin-text/90 mb-8">
-          Die ultimative <span className="text-sorin-highlight">Roblox-Exploiting-Lösung</span>
-        </p>
+  Das intergalaktische <span className="text-sorin-highlight">Roblox-Exploiting-Script</span>
+</p>
+
         
         <div className="mt-10 flex justify-center">
           <a href="#games" className="flex items-center gap-2 bg-sorin-accent/20 hover:bg-sorin-accent/40 transition-colors px-4 py-2 rounded-md text-sorin-text">

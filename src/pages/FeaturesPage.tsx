@@ -69,11 +69,14 @@ const FeaturesPage = () => {
             </div>
             
             <div className="mt-16 text-center">
-              <Button className="https://berlinrpvc.de">
-                Zugang Erhalten
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-              </Button>
-            </div>
+  <a href="https://berlinrpvc.de" target="_blank" rel="noopener noreferrer">
+    <Button>
+      Zugang Erhalten
+      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+    </Button>
+  </a>
+</div>
+
           </div>
         </div>
       </main>

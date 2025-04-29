@@ -12,7 +12,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="fixed w-full z-50 bg-sorin-dark/80 backdrop-blur-md">
+    <nav className="fixed w-full z-50 bg-gradient-to-b from-sorin-dark to-sorin-accent/30 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center">
@@ -23,16 +23,16 @@ const NavBar = () => {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-accent transition-colors">
+            <Link to="/" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
               Home
             </Link>
-            <Link to="/features" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-accent transition-colors">
+            <Link to="/features" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
               Features
             </Link>
-            <Link to="/faq" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-accent transition-colors">
+            <Link to="/faq" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
               FAQ
             </Link>
-            <Link to="/privacy" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-accent transition-colors">
+            <Link to="/privacy" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
               Privacy
             </Link>
             <Button className="border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20 transition-colors">

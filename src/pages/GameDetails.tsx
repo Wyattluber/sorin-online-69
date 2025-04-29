@@ -5,9 +5,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Copy, Link } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ArrowLeft, Copy, Bug, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import FeedbackForm from "@/components/FeedbackForm";
 
 type Game = {
   id: string;
@@ -22,96 +24,10 @@ const GameDetails = () => {
   const navigate = useNavigate();
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
-  const [scriptContent, setScriptContent] = useState(`-- Sorin Script für Notruf Hamburg
--- Version 1.0
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local Character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-
--- Hauptfunktionen
-local function teleportToEmergency()
-    local emergencies = workspace:FindFirstChild("Einsätze")
-    if emergencies then
-        for _, emergency in pairs(emergencies:GetChildren()) do
-            if emergency:IsA("Model") then
-                local primaryPart = emergency:FindFirstChild("PrimaryPart")
-                if primaryPart then
-                    Character:SetPrimaryPartCFrame(CFrame.new(primaryPart.Position + Vector3.new(0, 5, 0)))
-                    return true
-                end
-            end
-        end
-    end
-    return false
-end
-
--- ESP Funktionen
-local function createESP()
-    local emergencies = workspace:FindFirstChild("Einsätze")
-    if emergencies then
-        for _, emergency in pairs(emergencies:GetChildren()) do
-            if emergency:IsA("Model") then
-                local highlight = Instance.new("Highlight")
-                highlight.FillColor = Color3.fromRGB(255, 0, 0)
-                highlight.OutlineColor = Color3.fromRGB(255, 255, 0)
-                highlight.FillTransparency = 0.5
-                highlight.OutlineTransparency = 0
-                highlight.Parent = emergency
-            end
-        end
-    end
-end
-
--- Fahrzeug-Modifikationen
-local function boostVehicles()
-    local vehicles = workspace:FindFirstChild("Fahrzeuge")
-    if vehicles then
-        for _, vehicle in pairs(vehicles:GetChildren()) do
-            if vehicle:IsA("Model") and vehicle:FindFirstChild("Engine") then
-                local engine = vehicle.Engine
-                if engine:FindFirstChild("MaxSpeed") then
-                    engine.MaxSpeed.Value = engine.MaxSpeed.Value * 1.5
-                end
-            end
-        end
-    end
-end
-
--- Anti-Kick Schutz
-local function setupAntiKick()
-    local oldNamecall
-    oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
-        local method = getnamecallmethod()
-        if method == "Kick" or method == "Teleport" then
-            print("Kick/Teleport verhindert")
-            return wait(9e9)
-        end
-        return oldNamecall(self, ...)
-    end)
-end
-
--- Befehle
-local commands = {
-    ["/tp"] = teleportToEmergency,
-    ["/esp"] = createESP,
-    ["/boost"] = boostVehicles,
-    ["/antikick"] = setupAntiKick
-}
-
--- Chat-Hook für Befehle
-LocalPlayer.Chatted:Connect(function(message)
-    for cmd, func in pairs(commands) do
-        if message:lower():sub(1, #cmd) == cmd:lower() then
-            local success = func()
-            print(cmd .. " ausgeführt: " .. (success and "Erfolgreich" or "Fehlgeschlagen"))
-        end
-    end
-end)
-
-print("Sorin Script für Notruf Hamburg wurde geladen!")
-print("Verfügbare Befehle: /tp, /esp, /boost, /antikick")
-`);
+  const [activeTab, setActiveTab] = useState("script");
+  
+  // Just the loadstring for the script
+  const loadString = `loadstring(game:HttpGet("https://sorin.app/scripts/${id}.lua"))()`;
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -137,7 +53,7 @@ print("Verfügbare Befehle: /tp, /esp, /boost, /antikick")
   }, [id]);
 
   const copyScript = () => {
-    navigator.clipboard.writeText(scriptContent)
+    navigator.clipboard.writeText(loadString)
       .then(() => {
         toast.success("Script wurde in die Zwischenablage kopiert");
       })
@@ -186,96 +102,145 @@ print("Verfügbare Befehle: /tp, /esp, /boost, /antikick")
       <NavBar />
       <main className="flex-grow">
         {/* Hero section with game image */}
-        <div className="relative h-[40vh] md:h-[50vh]">
+        <div className="relative h-[50vh] md:h-[60vh]">
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
               backgroundImage: `url("${game.image_url}")`,
-              filter: 'brightness(0.4)'
+              filter: 'brightness(0.3)'
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-sorin-dark to-transparent" />
           <div className="container mx-auto px-4 h-full flex items-end pb-12">
-            <h1 className="text-4xl font-bold text-sorin-highlight sorin-glow">{game.name}</h1>
+            <div>
+              <h1 className="text-4xl md:text-5xl font-bold text-sorin-highlight sorin-glow mb-4">{game.name}</h1>
+              {game.description && (
+                <p className="text-sorin-text/90 max-w-2xl text-lg">{game.description}</p>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Back button */}
-        <div className="container mx-auto px-4 py-6">
+        {/* Content area */}
+        <div className="container mx-auto px-4 py-8">
           <Button
             variant="outline"
             onClick={() => navigate("/")}
-            className="flex items-center gap-2 mb-6 bg-sorin-primary/50 text-sorin-text border-sorin-accent/20 hover:bg-sorin-accent/10"
+            className="flex items-center gap-2 mb-8 bg-sorin-primary/50 text-sorin-text border-sorin-accent/20 hover:bg-sorin-accent/10"
           >
             <ArrowLeft className="h-4 w-4" />
             Zurück zur Spieleauswahl
           </Button>
 
-          <div className="bg-sorin-primary/50 backdrop-blur-sm rounded-lg p-6 border border-sorin-accent/20 mb-12">
-            {game.description && (
-              <div className="mb-8">
-                <h2 className="text-xl font-semibold text-sorin-highlight mb-4">Beschreibung</h2>
-                <p className="text-sorin-text/90">{game.description}</p>
-              </div>
-            )}
+          <div className="max-w-5xl mx-auto">
+            <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <TabsList className="grid grid-cols-3 mb-8 bg-sorin-dark/70">
+                <TabsTrigger 
+                  value="script" 
+                  className="data-[state=active]:bg-sorin-accent text-sorin-text"
+                >
+                  Script
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="bug" 
+                  className="data-[state=active]:bg-sorin-accent text-sorin-text"
+                >
+                  <Bug className="mr-2 h-4 w-4" />
+                  Bug melden
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="suggestion" 
+                  className="data-[state=active]:bg-sorin-accent text-sorin-text"
+                >
+                  <MessageSquare className="mr-2 h-4 w-4" />
+                  Vorschläge
+                </TabsTrigger>
+              </TabsList>
 
-            <h2 className="text-xl font-semibold text-sorin-highlight mb-4">Script Status</h2>
-            {game.script_available ? (
-              <div>
-                <p className="text-sorin-text/90 mb-4">Das Script ist verfügbar und bereit zum Kopieren.</p>
-                <div className="mb-8">
-                  <Button 
-                    className="bg-sorin-accent hover:bg-sorin-highlight flex items-center gap-2"
-                    onClick={copyScript}
-                  >
-                    <Copy className="h-4 w-4" />
-                    Script kopieren
-                  </Button>
-                </div>
-                
-                <div className="mt-4">
-                  <div className="bg-sorin-dark/70 p-4 rounded-md">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-sm text-sorin-muted">script-{game.name.toLowerCase().replace(/\s+/g, '-')}.lua</span>
-                      <Button 
-                        variant="ghost" 
-                        className="h-8 w-8 p-0 text-sorin-muted hover:text-sorin-highlight"
-                        onClick={copyScript}
-                      >
-                        <Copy className="h-4 w-4" />
-                        <span className="sr-only">Kopieren</span>
-                      </Button>
+              <TabsContent value="script" className="border-none p-0">
+                <div className="bg-sorin-primary/50 backdrop-blur-sm rounded-lg p-6 border border-sorin-accent/20">
+                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Script für {game.name}</h2>
+                  
+                  {game.script_available ? (
+                    <div>
+                      <p className="text-sorin-text/90 mb-6">
+                        Kopiere den folgenden Code und füge ihn in deinen Executor ein.
+                      </p>
+                      
+                      <div className="mb-6">
+                        <Button 
+                          className="bg-sorin-accent hover:bg-sorin-highlight flex items-center gap-2"
+                          onClick={copyScript}
+                        >
+                          <Copy className="h-4 w-4" />
+                          Script kopieren
+                        </Button>
+                      </div>
+                      
+                      <div className="bg-sorin-dark/70 p-4 rounded-md">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-sm text-sorin-muted">loadstring</span>
+                          <Button 
+                            variant="ghost" 
+                            className="h-8 w-8 p-0 text-sorin-muted hover:text-sorin-highlight"
+                            onClick={copyScript}
+                          >
+                            <Copy className="h-4 w-4" />
+                            <span className="sr-only">Kopieren</span>
+                          </Button>
+                        </div>
+                        <pre className="text-sm md:text-base text-sorin-text/90 overflow-x-auto p-4 bg-sorin-dark/50 rounded border border-sorin-accent/10">
+                          <code>{loadString}</code>
+                        </pre>
+                      </div>
+
+                      <div className="mt-8 border-t border-sorin-accent/10 pt-8">
+                        <h2 className="text-xl font-semibold text-sorin-highlight mb-4">Installation</h2>
+                        <ol className="list-decimal pl-5 space-y-2 text-sorin-text/90">
+                          <li>Kopiere den Code mit dem Button oben.</li>
+                          <li>Öffne deinen Roblox Executor.</li>
+                          <li>Füge den Code in deinen Executor ein.</li>
+                          <li>Starte das Spiel und führe den Code aus.</li>
+                        </ol>
+                      </div>
+
+                      <div className="mt-8 border-t border-sorin-accent/10 pt-8">
+                        <h2 className="text-xl font-semibold text-sorin-highlight mb-4">Features</h2>
+                        <ul className="list-disc pl-5 space-y-2 text-sorin-text/90">
+                          <li>Automatisches Teleportieren zu Einsätzen</li>
+                          <li>ESP für aktive Einsätze</li>
+                          <li>Fahrzeug-Modifikationen für höhere Geschwindigkeit</li>
+                          <li>Admin-Befehle Umgehung</li>
+                          <li>Anti-Kick Schutz</li>
+                        </ul>
+                      </div>
                     </div>
-                    <pre className="text-xs md:text-sm text-sorin-text/90 overflow-x-auto p-4 bg-sorin-dark/50 rounded border border-sorin-accent/10">
-                      <code>{scriptContent}</code>
-                    </pre>
-                  </div>
+                  ) : (
+                    <p className="text-sorin-text/90">Das Script ist derzeit in Entwicklung und wird bald verfügbar sein.</p>
+                  )}
                 </div>
-              </div>
-            ) : (
-              <p className="text-sorin-text/90">Das Script ist derzeit in Entwicklung und wird bald verfügbar sein.</p>
-            )}
+              </TabsContent>
 
-            <div className="mt-8 border-t border-sorin-accent/10 pt-8">
-              <h2 className="text-xl font-semibold text-sorin-highlight mb-4">Installation</h2>
-              <ol className="list-decimal pl-5 space-y-2 text-sorin-text/90">
-                <li>Kopiere das Script mit dem Button oben.</li>
-                <li>Öffne deinen Roblox Executor.</li>
-                <li>Füge das Script in deinen Executor ein.</li>
-                <li>Starte das Spiel und führe das Script aus.</li>
-              </ol>
-            </div>
+              <TabsContent value="bug" className="border-none p-0">
+                <div className="bg-sorin-primary/50 backdrop-blur-sm rounded-lg p-6 border border-sorin-accent/20">
+                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Bug melden für {game.name}</h2>
+                  <p className="text-sorin-text/90 mb-6">
+                    Hast du einen Fehler im Script entdeckt? Bitte beschreibe ihn so genau wie möglich, damit wir ihn beheben können.
+                  </p>
+                  <FeedbackForm type="bug" />
+                </div>
+              </TabsContent>
 
-            <div className="mt-8 border-t border-sorin-accent/10 pt-8">
-              <h2 className="text-xl font-semibold text-sorin-highlight mb-4">Features</h2>
-              <ul className="list-disc pl-5 space-y-2 text-sorin-text/90">
-                <li>Automatisches Teleportieren zu Einsätzen</li>
-                <li>ESP für aktive Einsätze</li>
-                <li>Fahrzeug-Modifikationen für höhere Geschwindigkeit</li>
-                <li>Admin-Befehle Umgehung</li>
-                <li>Anti-Kick Schutz</li>
-              </ul>
-            </div>
+              <TabsContent value="suggestion" className="border-none p-0">
+                <div className="bg-sorin-primary/50 backdrop-blur-sm rounded-lg p-6 border border-sorin-accent/20">
+                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Vorschläge für {game.name}</h2>
+                  <p className="text-sorin-text/90 mb-6">
+                    Hast du Ideen oder Verbesserungsvorschläge für das Script? Teile sie mit uns!
+                  </p>
+                  <FeedbackForm type="suggestion" />
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
       </main>

@@ -37,6 +37,7 @@ const FeedbackForm: React.FC<FeedbackFormProps> = ({ type }) => {
 
   const onSubmit = async (data: FormValues) => {
     try {
+      // Insert into the feedback table instead of games
       const { error } = await supabase
         .from('feedback')
         .insert([{ 

@@ -9,6 +9,41 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      feedback: {
+        Row: {
+          created_at: string
+          discord_id: string
+          game_id: string | null
+          id: string
+          message: string
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          discord_id: string
+          game_id?: string | null
+          id?: string
+          message: string
+          type: string
+        }
+        Update: {
+          created_at?: string
+          discord_id?: string
+          game_id?: string | null
+          id?: string
+          message?: string
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "feedback_game_id_fkey"
+            columns: ["game_id"]
+            isOneToOne: false
+            referencedRelation: "games"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       games: {
         Row: {
           created_at: string | null

@@ -28,4 +28,4 @@ const GetKeyPage = () => {
   );
 };
 
-export default getkey;
+export default GetKeyPage;

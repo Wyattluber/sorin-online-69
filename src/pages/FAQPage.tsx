@@ -6,36 +6,36 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 const faqs = [
   {
-    question: "Was ist Sorin?",
-    answer: "Sorin ist ein erweitertes Script für Emergency Hamburg, das dir spezielle Spielfunktionen und Vorteile freischaltet.Damit erhältst du Zugriff auf exklusive Befehle und Features, die dir im Einsatz einen klaren Vorteil verschaffen – ob bei der Koordination, Reaktion oder taktischen Planung."
+    question: "🚀 Was ist Sorin?",
+    answer: "Sorin ist ein erweitertes Script für Emergency Hamburg auf Roblox, das dir exklusive Funktionen und Vorteile bietet. Mit Sorin schaltest du spezielle Kommandos frei, die dir im Einsatz einen spürbaren Vorsprung verschaffen – bei Einsätzen, Koordination und Taktik."
   },
   {
-    question: "Ist Sorin sicher zu verwenden?",
-    answer: "Sorin wurde entwickelt, um dir in Emergency Hamburg auf Roblox neue Funktionen und Vorteile bereitzustellen – mit besonderem Fokus auf Schutz vor Erkennung.Das Script nutzt Methoden wie Code-Verschleierung und sichere Aufrufe, um möglichst unauffällig zu bleiben.Trotz aller Schutzmaßnahmen kann niemals völlige Sicherheit garantiert werden: Es besteht immer das Risiko, dass Spielmoderatoren oder automatische Systeme Eingriffe erkennen."
+    question: "🔒 Ist Sorin sicher zu verwenden?",
+    answer: "Sorin nutzt moderne Schutztechniken wie Code-Verschleierung und sichere Aufrufe, um Entdeckung so schwierig wie möglich zu machen. Dennoch kann keine vollständige Sicherheit garantiert werden – ein gewisses Risiko bleibt immer bestehen, wenn Serverüberprüfungen stattfinden."
   },
   {
-    question: "Wie erhalte ich Zugang zu Sorin?",
-    answer: "Um Sorin zu nutzen, musst du zunächst den offiziellen Loadstring in deinen Executor laden. Beim ersten Start wirst du aufgefordert, einen persönlichen Key zu generieren. Nach erfolgreicher Verifizierung wird der Zugriff auf alle Funktionen freigeschaltet."
+    question: "🧩 Wie erhalte ich Zugang zu Sorin?",
+    answer: "Lade einfach den offiziellen Loadstring in deinen Executor und starte Sorin. Beim ersten Start wirst du aufgefordert, einen persönlichen Key zu generieren, um Zugang zu erhalten. Nach erfolgreicher Verifizierung steht dir der gesamte Funktionsumfang zur Verfügung."
   },
   {
-    question: "Wird Sorin regelmäßig aktualisiert?",
-    answer: "Ja, Sorin erhält kontinuierliche Updates, um seine Leistungsfähigkeit zu verbessern und sich an Änderungen im Roblox-Ökosystem anzupassen. Unsere Entwickler arbeiten unermüdlich daran, die fortschrittlichste Lösung auf dem Markt anzubieten."
+    question: "⚙️ Wird Sorin regelmäßig aktualisiert?",
+    answer: "Ja! Sorin wird ständig an Spielupdates angepasst und weiterentwickelt. Unser Entwicklerteam sorgt dafür, dass du immer Zugriff auf die neuesten Features und Schutzmechanismen hast."
   },
   {
-    question: "Bietet Sorin technischen Support?",
-    answer: "Benutzer von Sorin erhalten Zugang zu unserem Discord Support-System, das schnelle Hilfe und Lösungen für jede Herausforderung bietet."
+    question: "🎯 Gibt es technischen Support?",
+    answer: "Ja, natürlich! Als Sorin-Nutzer erhältst du Zugang zu unserem Discord Support-System, wo du schnelle Hilfe und Antworten auf alle deine Fragen bekommst."
   },
   {
-    question: "Welche Roblox-Spiele werden unterstützt?",
-    answer: "Sorin ist speziell auf Emergency Hamburg ausgerichtet, um dir stets aktuelle Features und Verbesserungen bieten zu können. Durch diese Fokussierung können Updates besonders schnell bereitgestellt und neue Funktionen zeitnah integriert werden."
+    question: "🌐 Welche Roblox-Spiele unterstützt Sorin?",
+    answer: "Sorin konzentriert sich speziell auf Emergency Hamburg. Dadurch können wir schnelle Updates und maßgeschneiderte Funktionen garantieren, die genau auf dieses Spiel abgestimmt sind."
   },
   {
-    question: "Benötige ich einen speziellen Executor für Sorin?",
-    answer: "Sorin funktioniert mit den meisten gängigen Roblox-Executors. Für optimale Leistung empfehlen wir jedoch Xeno, welcher alle Funktionen von Sorin voll unterstützen. Sollte"
+    question: "🛠️ Brauche ich einen bestimmten Executor für Sorin?",
+    answer: "Sorin funktioniert mit den meisten gängigen Roblox-Executors. Für beste Stabilität und volle Unterstützung empfehlen wir jedoch Xeno, um alle Features optimal nutzen zu können."
   },
   {
-    question: "Kann ich Sorin auf verschiedenen Geräten verwenden?",
-    answer: "Aktuell ist Sorin hauptsächlich für Windows-PCs optimiert. Wir arbeiten jedoch an der Unterstützung weiterer Plattformen, um die Zugänglichkeit zu verbessern."
+    question: "🖥️ Kann ich Sorin auf mehreren Geräten nutzen?",
+    answer: "Aktuell ist Sorin für Windows-PCs optimiert. Die Erweiterung auf weitere Plattformen ist bereits in Planung, um noch mehr Spielern den Zugang zu ermöglichen."
   }
 ];
 

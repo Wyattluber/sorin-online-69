@@ -2,8 +2,7 @@
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Menu, X, Info } from "lucide-react";
-import { Discord } from "lucide-react";  // Import the Discord icon
+import { Moon, Sun, Menu, X, MessageSquare } from "lucide-react";
 
 // Navigation items
 const navItems = [
@@ -59,7 +58,7 @@ const NavBar = () => {
               className="text-sorin-text hover:text-sorin-highlight transition-colors"
               title="Join our Discord"
             >
-              <Discord className="h-5 w-5" />
+              <MessageSquare className="h-5 w-5" />
             </a>
 
             {/* Theme Toggle */}
@@ -129,7 +128,7 @@ const NavBar = () => {
                   className="text-sorin-text hover:text-sorin-highlight transition-colors"
                   title="Join our Discord"
                 >
-                  <Discord className="h-5 w-5" />
+                  <MessageSquare className="h-5 w-5" />
                 </a>
                 <Button
                   variant="outline"

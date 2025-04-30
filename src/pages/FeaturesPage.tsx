@@ -41,14 +41,16 @@ const FeaturesPage = () => {
     const fetchExecutionCount = async () => {
       try {
         setLoading(true);
-        // This is the fix - use a custom RPC function instead of direct table access
-        // since 'executions' is not in the TypeScript types yet
-        const { data, error } = await supabase.rpc('get_execution_count');
+        // Use a direct query to the executions table instead of RPC
+        const { data, error } = await supabase
+          .from('executions')
+          .select('count')
+          .single();
 
         if (error) {
           console.error("Error fetching execution count:", error);
         } else if (data !== null) {
-          setExecutionCount(data);
+          setExecutionCount(data.count);
         }
       } catch (err) {
         console.error("Failed to fetch execution count:", err);

@@ -26,6 +26,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/getkey" element={<GetKeyPage />} />
+          <Route path="/keygen/:key" element={<GetKeyPage />} />
           <Route path="/game/:id" element={<GameDetails />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/faq" element={<FAQPage />} />

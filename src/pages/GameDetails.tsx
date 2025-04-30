@@ -17,6 +17,8 @@ type Game = {
   image_url: string;
   description: string | null;
   script_available: boolean;
+  script_url: string | null;
+  detail_image_url: string | null;
 };
 
 const GameDetails = () => {
@@ -25,9 +27,12 @@ const GameDetails = () => {
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("script");
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
-  // Just the loadstring for the script
-  const loadString = `loadstring(game:HttpGet("https://sorin.app/scripts/${id}.lua"))()`;
+  // Get the loadstring for the script
+  const loadString = game?.script_url 
+    ? `loadstring(game:HttpGet("${game.script_url}"))()` 
+    : `loadstring(game:HttpGet("https://sorin.app/scripts/${id}.lua"))()`;
 
   useEffect(() => {
     const fetchGame = async () => {
@@ -60,6 +65,19 @@ const GameDetails = () => {
       .catch((err) => {
         toast.error("Fehler beim Kopieren: " + err.message);
       });
+  };
+
+  // Handle image navigation if there are multiple detail images
+  const handleNextImage = () => {
+    if (game?.detail_images && game.detail_images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % game.detail_images.length);
+    }
+  };
+
+  const handlePrevImage = () => {
+    if (game?.detail_images && game.detail_images.length > 0) {
+      setCurrentImageIndex((prev) => (prev === 0 ? game.detail_images.length - 1 : prev - 1));
+    }
   };
 
   if (loading) {
@@ -106,16 +124,16 @@ const GameDetails = () => {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `url("${game.image_url}")`,
+              backgroundImage: `url("${game?.image_url}")`,
               filter: 'brightness(0.3)'
             }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-sorin-dark to-transparent" />
           <div className="container mx-auto px-4 h-full flex items-end pb-12">
             <div>
-              <h1 className="text-4xl md:text-5xl font-bold text-sorin-highlight sorin-glow mb-4">{game.name}</h1>
-              {game.description && (
-                <p className="text-sorin-text/90 max-w-2xl text-lg">{game.description}</p>
+              <h1 className="text-4xl md:text-5xl font-bold text-sorin-highlight sorin-glow mb-4">{game?.name}</h1>
+              {game?.description && (
+                <p className="text-sorin-text/90 max-w-2xl text-lg">{game?.description}</p>
               )}
             </div>
           </div>
@@ -144,6 +162,7 @@ const GameDetails = () => {
                 <TabsTrigger 
                   value="bug" 
                   className="data-[state=active]:bg-sorin-accent text-sorin-text"
+                  disabled={!game?.script_available}
                 >
                   <Bug className="mr-2 h-4 w-4" />
                   Bug melden
@@ -151,6 +170,7 @@ const GameDetails = () => {
                 <TabsTrigger 
                   value="suggestion" 
                   className="data-[state=active]:bg-sorin-accent text-sorin-text"
+                  disabled={!game?.script_available}
                 >
                   <MessageSquare className="mr-2 h-4 w-4" />
                   Vorschläge
@@ -159,9 +179,20 @@ const GameDetails = () => {
 
               <TabsContent value="script" className="border-none p-0">
                 <div className="bg-sorin-primary/50 backdrop-blur-sm rounded-lg p-6 border border-sorin-accent/20">
-                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Script für {game.name}</h2>
+                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Script für {game?.name}</h2>
                   
-                  {game.script_available ? (
+                  {/* Detail image display */}
+                  {game?.detail_image_url && (
+                    <div className="mb-6">
+                      <img 
+                        src={game.detail_image_url} 
+                        alt={`${game.name} Detail`} 
+                        className="w-full max-h-[400px] object-contain rounded-lg border border-sorin-accent/20"
+                      />
+                    </div>
+                  )}
+                  
+                  {game?.script_available ? (
                     <div>
                       <p className="text-sorin-text/90 mb-6">
                         Kopiere den folgenden Code und füge ihn in deinen Executor ein.
@@ -222,7 +253,7 @@ const GameDetails = () => {
 
               <TabsContent value="bug" className="border-none p-0">
                 <div className="bg-sorin-primary/50 backdrop-blur-sm rounded-lg p-6 border border-sorin-accent/20">
-                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Bug melden für {game.name}</h2>
+                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Bug melden für {game?.name}</h2>
                   <p className="text-sorin-text/90 mb-6">
                     Hast du einen Fehler im Script entdeckt? Bitte beschreibe ihn so genau wie möglich, damit wir ihn beheben können.
                   </p>
@@ -232,7 +263,7 @@ const GameDetails = () => {
 
               <TabsContent value="suggestion" className="border-none p-0">
                 <div className="bg-sorin-primary/50 backdrop-blur-sm rounded-lg p-6 border border-sorin-accent/20">
-                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Vorschläge für {game.name}</h2>
+                  <h2 className="text-xl font-semibold text-sorin-highlight mb-6">Vorschläge für {game?.name}</h2>
                   <p className="text-sorin-text/90 mb-6">
                     Hast du Ideen oder Verbesserungsvorschläge für das Script? Teile sie mit uns!
                   </p>

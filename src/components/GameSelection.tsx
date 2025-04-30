@@ -10,6 +10,8 @@ type Game = {
   image_url: string;
   description: string | null;
   script_available: boolean;
+  script_url: string | null;
+  detail_image_url: string | null;
 };
 
 const GameSelection = () => {

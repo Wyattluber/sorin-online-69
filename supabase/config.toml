@@ -1,1 +1,4 @@
+
 project_id = "iesugielppyhhvtdzsqq"
+[functions.cleanup-keys]
+verify_jwt = false

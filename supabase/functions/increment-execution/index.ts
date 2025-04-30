@@ -6,6 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// This Edge Function increments the execution counter when a valid key is provided
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -13,32 +14,25 @@ Deno.serve(async (req) => {
   }
 
   try {
+    const { key } = await req.json();
+    
+    if (!key) {
+      throw new Error('Key is required');
+    }
+    
     // Create Supabase client
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     );
     
-    // Parse request body
-    const { key } = await req.json();
-    
-    if (!key) {
-      return new Response(
-        JSON.stringify({ success: false, error: 'Key is required' }),
-        { 
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-          status: 400 
-        }
-      );
-    }
-
-    // Mark the key as used and increment the counter
+    // Call the function to increment the counter and mark key as used
     const { error } = await supabaseClient.rpc('increment_execution_counter', { key_value: key });
     
     if (error) throw error;
     
     return new Response(
-      JSON.stringify({ success: true }),
+      JSON.stringify({ success: true, message: 'Execution counter incremented' }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 

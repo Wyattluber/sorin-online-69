@@ -33,6 +33,24 @@ export type Database = {
         }
         Relationships: []
       }
+      executions: {
+        Row: {
+          count: number
+          id: number
+          updated_at: string
+        }
+        Insert: {
+          count?: number
+          id?: number
+          updated_at?: string
+        }
+        Update: {
+          count?: number
+          id?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           created_at: string
@@ -145,7 +163,14 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      create_executions_table: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
+      increment_execution_counter: {
+        Args: { key_value: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never

@@ -6,6 +6,7 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
+// This Edge Function will be called periodically to clean up expired keys
 Deno.serve(async (req) => {
   // Handle CORS preflight requests
   if (req.method === 'OPTIONS') {
@@ -19,24 +20,13 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     );
     
-    // Current timestamp
-    const now = new Date();
-    
     // Delete expired keys
-    const { error, count } = await supabaseClient
-      .from('keys')
-      .delete({ count: 'exact' })
-      .lt('expires_at', now.toISOString());
+    const { error } = await supabaseClient.rpc('delete_expired_keys');
     
     if (error) throw error;
     
-    console.log(`Successfully deleted ${count} expired keys`);
-    
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: `Successfully deleted ${count} expired keys` 
-      }),
+      JSON.stringify({ success: true, message: 'Expired keys cleaned up successfully' }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 
@@ -44,7 +34,7 @@ Deno.serve(async (req) => {
     );
     
   } catch (error) {
-    console.error('Error cleaning up keys:', error);
+    console.error('Error cleaning up expired keys:', error);
     
     return new Response(
       JSON.stringify({ success: false, error: error.message }),

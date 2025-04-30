@@ -1,132 +1,159 @@
 
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Moon, Sun, Menu, X, Info } from "lucide-react";
+import { Discord } from "lucide-react";  // Import the Discord icon
+
+// Navigation items
+const navItems = [
+  { label: "Home", href: "/" },
+  { label: "Features", href: "/features" },
+  { label: "FAQ", href: "/faq" }
+];
 
 const NavBar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDark, setIsDark] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    document.documentElement.classList.toggle("dark");
   };
 
   return (
-    <nav className="fixed w-full z-50 bg-gradient-to-b from-sorin-dark to-sorin-accent/30 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-sorin-primary/80 backdrop-blur-sm border-b border-sorin-accent/20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center">
-            <Link to="/" className="flex-shrink-0">
-              <span className="text-xl font-bold text-sorin-highlight sorin-glow">SORIN</span>
+        <div className="flex justify-between items-center h-16">
+          {/* Logo and Brand */}
+          <div className="flex-shrink-0 flex items-center">
+            <Link to="/" className="text-sorin-highlight text-xl font-bold">
+              <span className="gradient-text">SORIN</span>
             </Link>
           </div>
-          
+
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <Link to="/" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
-              Home
-            </Link>
-            <Link to="/getkey" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
-              Get Key
-            </Link>
-            <Link to="/features" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
-              Features
-            </Link>
-            <Link to="/faq" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
-              FAQ
-            </Link>
-            <Link to="/privacy" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
-              Privacy
-            </Link>
-            <a href="https://discord.gg/sorin" target="_blank" rel="noopener noreferrer" className="border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20 transition-colors rounded-md px-4 py-2 inline-flex items-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                <circle cx="9" cy="12" r="1"/>
-                <circle cx="15" cy="12" r="1"/>
-                <path d="M7.5 7.2c-1 .1-3 .4-4.5 1.3-2 1.3-2 10.5-2 10.5s0 9.2 2 10.5c1.5.9 3.5 1.3 4.5 1.3"/>
-                <path d="M16.5 7.2c1 .1 3 .4 4.5 1.3 2 1.3 2 10.5 2 10.5s0 9.2-2 10.5c-1.5.9-3.5 1.3-4.5 1.3"/>
-                <path d="M16.5 7.2c-.3-1.4-1.4-2.8-2.5-3.9-1.2-1.2-3-2.3-4.5-2.3"/>
-                <path d="M7.5 7.2c.3-1.4 1.4-2.8 2.5-3.9 1.2-1.2 3-2.3 4.5-2.3"/>
-                <path d="M7.8 14.4c-.2 3.4.9 6 2.2 6 1.3 0 2.4-2.6 2.2-6s-1.2-5.8-2.2-5.8c-1 0-2.4 2.4-2.2 5.8Z"/>
-                <path d="M16.2 14.4c.2 3.4-.9 6-2.2 6-1.3 0-2.4-2.6-2.2-6S13 8.6 14 8.6c1 0 2.4 2.4 2.2 5.8Z"/>
-              </svg>
-              <span>Discord</span>
-            </a>
-          </div>
-          
-          {/* Mobile menu button */}
-          <div className="md:hidden flex items-center">
-            <button
-              onClick={toggleMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-sorin-text hover:text-sorin-highlight"
+          <nav className="hidden md:flex space-x-8">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={`text-sm font-medium transition-colors hover:text-sorin-highlight ${
+                  location.pathname === item.href
+                    ? "text-sorin-highlight"
+                    : "text-sorin-text/80"
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* Right Side Actions */}
+          <div className="hidden md:flex items-center space-x-4">
+            <a 
+              href="https://discord.gg/5jVRsrj8" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-sorin-text hover:text-sorin-highlight transition-colors"
+              title="Join our Discord"
             >
-              {isMenuOpen ? (
-                <X className="h-6 w-6" />
+              <Discord className="h-5 w-5" />
+            </a>
+
+            {/* Theme Toggle */}
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full"
+              onClick={toggleTheme}
+            >
+              {isDark ? (
+                <Sun className="h-4 w-4 text-sorin-text" />
               ) : (
-                <Menu className="h-6 w-6" />
+                <Moon className="h-4 w-4 text-sorin-text" />
               )}
-            </button>
+            </Button>
+
+            {/* Get Key Button */}
+            <Link to="/getkey">
+              <Button className="bg-sorin-accent text-sorin-dark hover:bg-sorin-highlight">
+                Get Key
+              </Button>
+            </Link>
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <Button
+              variant="outline"
+              size="icon"
+              className="rounded-full ml-4"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? (
+                <X className="h-4 w-4 text-sorin-text" />
+              ) : (
+                <Menu className="h-4 w-4 text-sorin-text" />
+              )}
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      {isMenuOpen && (
-        <div className="md:hidden bg-sorin-dark/95 backdrop-blur-md border-t border-sorin-accent/10">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link
-              to="/"
-              className="block px-3 py-2 rounded-md text-base font-medium text-sorin-text hover:text-sorin-highlight"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Home
-            </Link>
-            <Link
-              to="/getkey"
-              className="block px-3 py-2 rounded-md text-base font-medium text-sorin-text hover:text-sorin-highlight"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Key holen
-            </Link>
-            <Link
-              to="/features"
-              className="block px-3 py-2 rounded-md text-base font-medium text-sorin-text hover:text-sorin-highlight"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Features
-            </Link>
-            <Link
-              to="/faq"
-              className="block px-3 py-2 rounded-md text-base font-medium text-sorin-text hover:text-sorin-highlight"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              FAQ
-            </Link>
-            <Link
-              to="/privacy"
-              className="block px-3 py-2 rounded-md text-base font-medium text-sorin-text hover:text-sorin-highlight"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Privacy
-            </Link>
-            <div className="px-3 py-2">
-              <a href="https://discord.gg/sorin" target="_blank" rel="noopener noreferrer" className="w-full border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20 transition-colors rounded-md px-4 py-2 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
-                  <circle cx="9" cy="12" r="1"/>
-                  <circle cx="15" cy="12" r="1"/>
-                  <path d="M7.5 7.2c-1 .1-3 .4-4.5 1.3-2 1.3-2 10.5-2 10.5s0 9.2 2 10.5c1.5.9 3.5 1.3 4.5 1.3"/>
-                  <path d="M16.5 7.2c1 .1 3 .4 4.5 1.3 2 1.3 2 10.5 2 10.5s0 9.2-2 10.5c-1.5.9-3.5 1.3-4.5 1.3"/>
-                  <path d="M16.5 7.2c-.3-1.4-1.4-2.8-2.5-3.9-1.2-1.2-3-2.3-4.5-2.3"/>
-                  <path d="M7.5 7.2c.3-1.4 1.4-2.8 2.5-3.9 1.2-1.2 3-2.3 4.5-2.3"/>
-                  <path d="M7.8 14.4c-.2 3.4.9 6 2.2 6 1.3 0 2.4-2.6 2.2-6s-1.2-5.8-2.2-5.8c-1 0-2.4 2.4-2.2 5.8Z"/>
-                  <path d="M16.2 14.4c.2 3.4-.9 6-2.2 6-1.3 0-2.4-2.6-2.2-6S13 8.6 14 8.6c1 0 2.4 2.4 2.2 5.8Z"/>
-                </svg>
-                <span>Discord</span>
-              </a>
+      {/* Mobile Menu */}
+      {isOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-sorin-primary/90 backdrop-blur-md">
+            {navItems.map((item) => (
+              <Link
+                key={item.href}
+                to={item.href}
+                className={`block px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === item.href
+                    ? "text-sorin-highlight bg-sorin-accent/10"
+                    : "text-sorin-text/80 hover:text-sorin-highlight hover:bg-sorin-accent/5"
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <div className="flex items-center justify-between px-3 py-2">
+              <div className="flex items-center space-x-4">
+                <a 
+                  href="https://discord.gg/5jVRsrj8" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sorin-text hover:text-sorin-highlight transition-colors"
+                  title="Join our Discord"
+                >
+                  <Discord className="h-5 w-5" />
+                </a>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  className="rounded-full"
+                  onClick={toggleTheme}
+                >
+                  {isDark ? (
+                    <Sun className="h-4 w-4 text-sorin-text" />
+                  ) : (
+                    <Moon className="h-4 w-4 text-sorin-text" />
+                  )}
+                </Button>
+              </div>
+              <Link to="/getkey" onClick={() => setIsOpen(false)}>
+                <Button className="bg-sorin-accent text-sorin-dark hover:bg-sorin-highlight">
+                  Get Key
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

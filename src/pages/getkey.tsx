@@ -19,6 +19,7 @@ const GetKeyPage = () => {
   const [active, setActive] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [phase, setPhase] = useState<"start" | "waiting" | "done">("start");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -79,10 +80,10 @@ const GetKeyPage = () => {
         .eq('hwid', hwid)
         .eq('used', false)
         .gt('expires_at', new Date().toISOString())
-        .single();
+        .maybeSingle();
       
-      if (error) {
-        console.log("No existing key found or error:", error);
+      if (error && error.code !== 'PGRST116') {
+        console.error("Error checking existing key:", error);
         return null;
       }
       
@@ -94,6 +95,7 @@ const GetKeyPage = () => {
   };
 
   const handleGenerateKey = async () => {
+    setIsLoading(true);
     try {
       // Collect device info
       const deviceInfo = collectDeviceInfo();
@@ -123,7 +125,9 @@ const GetKeyPage = () => {
             expires_at: expiresAt.toISOString(),
           });
           
-        if (saveError) throw new Error(saveError.message);
+        if (saveError) {
+          throw new Error(saveError.message);
+        }
         
         setKey(newKey);
         toast.success("Key wurde erfolgreich generiert");
@@ -131,11 +135,14 @@ const GetKeyPage = () => {
       
       // Start countdown
       setPhase("waiting");
+      setError(null);
       
     } catch (err: any) {
       console.error(err);
       setError("Fehler beim Generieren des Keys. Bitte versuche es später erneut.");
       toast.error("Fehler beim Generieren des Keys");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -181,7 +188,9 @@ const GetKeyPage = () => {
             <p className="mb-6 text-sorin-text">
               Du bekommst einen Key, gültig für 1 Stunde – nur für dein Gerät.
             </p>
-            <Button onClick={handleGenerateKey}>Key generieren</Button>
+            <Button onClick={handleGenerateKey} disabled={isLoading}>
+              {isLoading ? "Generiere Key..." : "Key generieren"}
+            </Button>
           </>
         )}
 

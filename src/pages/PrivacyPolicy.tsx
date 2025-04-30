@@ -27,8 +27,15 @@ const PrivacyPolicy = () => {
               
               <h2 className="text-xl font-semibold text-sorin-highlight mb-4">2. Datenerhebung und -verwendung</h2>
               <p className="text-sorin-muted mb-6">
-                Bei der Nutzung von Sorin werden bestimmte Daten erhoben, die für die Funktionalität und Sicherheit unseres Dienstes erforderlich sind. Dies umfasst technische Informationen wie IP-Adressen, Geräte-Informationen und Nutzungsdaten. Diese Daten werden ausschließlich für die Bereitstellung, Verbesserung und Sicherheit unseres Dienstes verwendet.
+                Bei der Nutzung von Sorin werden bestimmte Daten erhoben, die für die Funktionalität und Sicherheit unseres Dienstes erforderlich sind. Dies umfasst technische Informationen wie IP-Adressen, Geräte-Informationen, Standortdaten und Nutzungsdaten. Diese Daten werden ausschließlich für folgende Zwecke verwendet:
               </p>
+              <ul className="list-disc pl-5 text-sorin-muted mb-6">
+                <li>Bereitstellung und Verbesserung unserer Dienste</li>
+                <li>Erkennung und Verhinderung von Missbrauch und Betrug</li>
+                <li>Debugging und Fehlerbehebung</li>
+                <li>Sicherheit des Systems und der Nutzer</li>
+                <li>Verhinderung von mehrfachen Key-Generierungen für dasselbe Gerät</li>
+              </ul>
               
               <h2 className="text-xl font-semibold text-sorin-highlight mb-4">3. Sicherheitsmaßnahmen</h2>
               <p className="text-sorin-muted mb-6">
@@ -40,12 +47,17 @@ const PrivacyPolicy = () => {
                 Ihre personenbezogenen Daten werden nicht an Dritte weitergegeben oder verkauft. Eine Übermittlung an Dritte erfolgt nur dann, wenn dies zur Erfüllung unserer vertraglichen Pflichten erforderlich ist oder wenn wir gesetzlich dazu verpflichtet sind.
               </p>
               
-              <h2 className="text-xl font-semibold text-sorin-highlight mb-4">5. Ihre Rechte</h2>
+              <h2 className="text-xl font-semibold text-sorin-highlight mb-4">5. IP-Adressen und Standortdaten</h2>
+              <p className="text-sorin-muted mb-6">
+                Für Sicherheitszwecke speichern wir Ihre IP-Adresse und approximative Standortdaten bei der Generierung eines Keys. Diese Informationen helfen uns dabei, missbräuchliche Nutzung zu erkennen, unser System sicherer zu machen und Probleme zu beheben. Diese Daten werden nur so lange aufbewahrt, wie es für die genannten Zwecke erforderlich ist.
+              </p>
+              
+              <h2 className="text-xl font-semibold text-sorin-highlight mb-4">6. Ihre Rechte</h2>
               <p className="text-sorin-muted mb-6">
                 Sie haben jederzeit das Recht auf Auskunft über die Sie betreffenden, von uns verarbeiteten personenbezogenen Daten sowie auf Berichtigung oder Löschung dieser Daten. Sie können der Verarbeitung Ihrer Daten widersprechen oder die Einschränkung der Verarbeitung verlangen.
               </p>
               
-              <h2 className="text-xl font-semibold text-sorin-highlight mb-4">6. Kontakt</h2>
+              <h2 className="text-xl font-semibold text-sorin-highlight mb-4">7. Kontakt</h2>
               <p className="text-sorin-muted">
                 Bei Fragen zur Erhebung, Verarbeitung oder Nutzung Ihrer personenbezogenen Daten können Sie uns jederzeit kontaktieren: <a href="mailto:privacy@sorin-script.com" className="text-sorin-accent hover:text-sorin-highlight">privacy@sorin-script.com</a>
               </p>

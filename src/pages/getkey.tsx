@@ -20,6 +20,8 @@ const GetKeyPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [phase, setPhase] = useState<"start" | "waiting" | "done">("start");
   const [isLoading, setIsLoading] = useState(false);
+  const [requestCount, setRequestCount] = useState(0);
+  const [lastRequestTime, setLastRequestTime] = useState(Date.now());
 
   const navigate = useNavigate();
 
@@ -59,6 +61,34 @@ const GetKeyPage = () => {
     return result;
   };
 
+  // Get approximate location based on IP (using a free API)
+  const getLocationFromIP = async (ip: string) => {
+    try {
+      const response = await fetch(`https://ipapi.co/${ip}/json/`);
+      if (!response.ok) return "Unknown";
+      
+      const data = await response.json();
+      return `${data.city || "Unknown"}, ${data.country_name || "Unknown"}`;
+    } catch (err) {
+      console.error("Error getting location:", err);
+      return "Unknown";
+    }
+  };
+
+  // Get user's IP address
+  const getIPAddress = async () => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      if (!response.ok) return null;
+      
+      const data = await response.json();
+      return data.ip;
+    } catch (err) {
+      console.error("Error getting IP:", err);
+      return null;
+    }
+  };
+
   // Collect device information
   const collectDeviceInfo = () => {
     const hwid = "HWID_" + btoa(navigator.userAgent + Date.now());
@@ -69,6 +99,50 @@ const GetKeyPage = () => {
       language: navigator.language,
       timestamp: new Date().toISOString()
     };
+  };
+
+  // Check if HWID is blacklisted
+  const checkBlacklist = async (hwid: string, ip: string | null) => {
+    try {
+      // Check by HWID
+      const { data: hwidData, error: hwidError } = await supabase
+        .from('blacklist')
+        .select('*')
+        .eq('hwid', hwid)
+        .maybeSingle();
+      
+      if (hwidError && hwidError.code !== 'PGRST116') {
+        console.error("Error checking blacklist by HWID:", hwidError);
+      }
+      
+      // If found by HWID, return reason
+      if (hwidData) {
+        return hwidData.reason || "HWID is blacklisted";
+      }
+      
+      // If IP provided, also check by IP
+      if (ip) {
+        const { data: ipData, error: ipError } = await supabase
+          .from('blacklist')
+          .select('*')
+          .eq('ip_address', ip)
+          .maybeSingle();
+        
+        if (ipError && ipError.code !== 'PGRST116') {
+          console.error("Error checking blacklist by IP:", ipError);
+        }
+        
+        if (ipData) {
+          return ipData.reason || "IP address is blacklisted";
+        }
+      }
+      
+      // Not blacklisted
+      return null;
+    } catch (err) {
+      console.error("Error checking blacklist:", err);
+      return "Error checking blacklist status";
+    }
   };
 
   // Check if a key already exists for this device
@@ -96,9 +170,54 @@ const GetKeyPage = () => {
 
   const handleGenerateKey = async () => {
     setIsLoading(true);
+    
     try {
+      // Check rate limiting
+      const now = Date.now();
+      const timeDiff = now - lastRequestTime;
+      
+      // If requests are within 10 seconds window
+      if (timeDiff < 10000) {
+        setRequestCount(prev => prev + 1);
+        
+        // If more than 5 requests in 10 seconds, add to blacklist
+        if (requestCount >= 4) {  // This will be the 5th request
+          const deviceInfo = collectDeviceInfo();
+          const ip = await getIPAddress();
+          
+          // Add to blacklist
+          await supabase
+            .from('blacklist')
+            .insert({
+              hwid: deviceInfo.hwid,
+              ip_address: ip,
+              reason: "Rate limit exceeded: Too many key requests"
+            });
+          
+          setError("Du hast zu viele Anfragen in kurzer Zeit gestellt. Deine Geräte-ID wurde gesperrt.");
+          setIsLoading(false);
+          return;
+        }
+      } else {
+        // Reset counter if outside 10 second window
+        setRequestCount(1);
+        setLastRequestTime(now);
+      }
+      
       // Collect device info
       const deviceInfo = collectDeviceInfo();
+      const ip = await getIPAddress();
+      
+      // Check if blacklisted
+      const blacklistReason = await checkBlacklist(deviceInfo.hwid, ip);
+      if (blacklistReason) {
+        setError(`Zugriff verweigert: ${blacklistReason}`);
+        setIsLoading(false);
+        return;
+      }
+      
+      // Get location data
+      const location = ip ? await getLocationFromIP(ip) : "Unknown";
       
       // Check if a valid key already exists for this device
       const existingKey = await checkExistingKey(deviceInfo.hwid);
@@ -115,7 +234,7 @@ const GetKeyPage = () => {
         const expiresAt = new Date();
         expiresAt.setHours(expiresAt.getHours() + 1);
         
-        // Save key to Supabase
+        // Save key to Supabase with IP and location
         const { error: saveError } = await supabase
           .from('keys')
           .insert({
@@ -123,6 +242,8 @@ const GetKeyPage = () => {
             hwid: deviceInfo.hwid,
             used: false,
             expires_at: expiresAt.toISOString(),
+            ip_adress: ip, // Note: Column name has the typo in it ("adress" not "address")
+            device_location: location
           });
           
         if (saveError) {

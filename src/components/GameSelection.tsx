@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,7 +33,20 @@ const GameSelection = () => {
           throw new Error(error.message);
         }
 
-        setGames(data || []);
+        // Transform the data to ensure all fields in the Game type are present
+        const transformedGames: Game[] = data?.map(game => ({
+          id: game.id,
+          name: game.name,
+          image_url: game.image_url,
+          description: game.description,
+          script_available: game.script_available || false,
+          script_url: game.script_url || null,
+          detail_image_url: game.detail_image_url || null,
+          created_at: game.created_at,
+          updated_at: game.updated_at
+        })) || [];
+
+        setGames(transformedGames);
       } catch (err) {
         console.error("Error loading games:", err);
         setError("Fehler beim Laden der Spiele");

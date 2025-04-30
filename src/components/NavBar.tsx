@@ -26,6 +26,9 @@ const NavBar = () => {
             <Link to="/" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
               Home
             </Link>
+            <Link to="/getkey" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
+              Get Key
+            </Link>
             <Link to="/features" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
               Features
             </Link>
@@ -67,6 +70,13 @@ const NavBar = () => {
               onClick={() => setIsMenuOpen(false)}
             >
               Home
+            </Link>
+            <Link
+              to="/getkey"
+              className="block px-3 py-2 rounded-md text-base font-medium text-sorin-text hover:text-sorin-highlight"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Key holen
             </Link>
             <Link
               to="/features"

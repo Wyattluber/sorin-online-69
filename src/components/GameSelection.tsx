@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -12,6 +11,8 @@ type Game = {
   script_available: boolean;
   script_url: string | null;
   detail_image_url: string | null;
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 const GameSelection = () => {

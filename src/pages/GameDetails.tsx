@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,6 +18,8 @@ type Game = {
   script_available: boolean;
   script_url: string | null;
   detail_image_url: string | null;
+  created_at: string | null;
+  updated_at: string | null;
 };
 
 const GameDetails = () => {
@@ -27,7 +28,6 @@ const GameDetails = () => {
   const [game, setGame] = useState<Game | null>(null);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("script");
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   // Get the loadstring for the script
   const loadString = game?.script_url 
@@ -44,7 +44,7 @@ const GameDetails = () => {
           .single();
           
         if (error) throw error;
-        setGame(data);
+        setGame(data as Game);
       } catch (error) {
         console.error("Error fetching game details:", error);
       } finally {
@@ -65,19 +65,6 @@ const GameDetails = () => {
       .catch((err) => {
         toast.error("Fehler beim Kopieren: " + err.message);
       });
-  };
-
-  // Handle image navigation if there are multiple detail images
-  const handleNextImage = () => {
-    if (game?.detail_images && game.detail_images.length > 0) {
-      setCurrentImageIndex((prev) => (prev + 1) % game.detail_images.length);
-    }
-  };
-
-  const handlePrevImage = () => {
-    if (game?.detail_images && game.detail_images.length > 0) {
-      setCurrentImageIndex((prev) => (prev === 0 ? game.detail_images.length - 1 : prev - 1));
-    }
   };
 
   if (loading) {

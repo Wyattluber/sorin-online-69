@@ -1,3 +1,4 @@
+
 // src/pages/getkey.tsx
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -5,7 +6,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 
-const GetKeyStart = () => {
+const GetKeyPage = () => {
   const [seconds, setSeconds] = useState(5);
   const [key, setKey] = useState<string | null>(null);
   const [active, setActive] = useState(true);

@@ -1,1 +1,11 @@
+
 project_id = "iesugielppyhhvtdzsqq"
+
+[functions.cleanup-keys]
+verify_jwt = false
+
+[functions.create-execution-counter]
+verify_jwt = false
+
+[functions.increment-execution]
+verify_jwt = false

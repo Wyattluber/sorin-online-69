@@ -27,7 +27,7 @@ const PrivacyPolicy = () => {
               
               <h2 className="text-xl font-semibold text-sorin-highlight mb-4">2. Datenerhebung und -verwendung</h2>
               <p className="text-sorin-muted mb-6">
-                Bei der Nutzung von Sorin werden bestimmte Daten erhoben, die für die Funktionalität und Sicherheit unseres Dienstes erforderlich sind. Dies umfasst technische Informationen wie IP-Adressen, Geräte-Informationen, Standortdaten und Nutzungsdaten. Diese Daten werden ausschließlich für folgende Zwecke verwendet:
+                Bei der Nutzung von Sorin werden bestimmte Daten erhoben, die für die Funktionalität, Debugging und Sicherheit unseres Dienstes erforderlich sind. Dies umfasst technische Informationen wie IP-Adressen, Geräte-Informationen, Standortdaten und Nutzungsdaten. Diese Daten werden ausschließlich für folgende Zwecke verwendet:
               </p>
               <ul className="list-disc pl-5 text-sorin-muted mb-6">
                 <li>Bereitstellung und Verbesserung unserer Dienste</li>
@@ -35,6 +35,8 @@ const PrivacyPolicy = () => {
                 <li>Debugging und Fehlerbehebung</li>
                 <li>Sicherheit des Systems und der Nutzer</li>
                 <li>Verhinderung von mehrfachen Key-Generierungen für dasselbe Gerät</li>
+                <li>Überwachung der Rate-Limits und Verhinderung von DoS-Angriffen</li>
+                <li>Analyse der Nutzungsmuster zur Verbesserung der Systemstabilität</li>
               </ul>
               
               <h2 className="text-xl font-semibold text-sorin-highlight mb-4">3. Sicherheitsmaßnahmen</h2>
@@ -49,7 +51,7 @@ const PrivacyPolicy = () => {
               
               <h2 className="text-xl font-semibold text-sorin-highlight mb-4">5. IP-Adressen und Standortdaten</h2>
               <p className="text-sorin-muted mb-6">
-                Für Sicherheitszwecke speichern wir Ihre IP-Adresse und approximative Standortdaten bei der Generierung eines Keys. Diese Informationen helfen uns dabei, missbräuchliche Nutzung zu erkennen, unser System sicherer zu machen und Probleme zu beheben. Diese Daten werden nur so lange aufbewahrt, wie es für die genannten Zwecke erforderlich ist.
+                Für Sicherheitszwecke und zur Vorbeugung von Missbrauch speichern wir Ihre IP-Adresse und approximative Standortdaten bei der Generierung eines Keys. Diese Informationen helfen uns dabei, missbräuchliche Nutzung zu erkennen, die Sicherheit zu gewährleisten, unser System gegen Angriffe zu schützen und Probleme zu beheben. Bei übermäßigen Anfragen können wir Ihre Geräte-ID oder IP-Adresse blockieren, um die Stabilität unseres Services zu gewährleisten. Diese Daten werden nur so lange aufbewahrt, wie es für die genannten Zwecke erforderlich ist.
               </p>
               
               <h2 className="text-xl font-semibold text-sorin-highlight mb-4">6. Ihre Rechte</h2>

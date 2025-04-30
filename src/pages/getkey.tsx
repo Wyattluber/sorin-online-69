@@ -6,7 +6,7 @@ import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { AlertCircle, Check } from "lucide-react";
+import { AlertCircle, Check, Copy } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 const GetKeyPage = () => {
@@ -18,12 +18,38 @@ const GetKeyPage = () => {
   const [key, setKey] = useState<string | null>(null);
   const [active, setActive] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [phase, setPhase] = useState<"start" | "waiting" | "done">("start");
+  const [phase, setPhase] = useState<"start" | "waiting" | "done" | "blocked">("start");
   const [isLoading, setIsLoading] = useState(false);
   const [requestCount, setRequestCount] = useState(0);
   const [lastRequestTime, setLastRequestTime] = useState(Date.now());
+  const [copied, setCopied] = useState(false);
+  const [isBlacklisted, setIsBlacklisted] = useState(false);
 
   const navigate = useNavigate();
+
+  // Check for blacklist status as soon as the component mounts
+  useEffect(() => {
+    const checkBlacklistStatus = async () => {
+      try {
+        const deviceInfo = collectDeviceInfo();
+        const ip = await getIPAddress();
+        
+        if (deviceInfo && ip) {
+          const blacklistResult = await checkBlacklist(deviceInfo.hwid, ip);
+          
+          if (blacklistResult) {
+            setIsBlacklisted(true);
+            setPhase("blocked");
+            setError(`Zugriff verweigert: ${blacklistResult}`);
+          }
+        }
+      } catch (err) {
+        console.error("Error checking blacklist status:", err);
+      }
+    };
+    
+    checkBlacklistStatus();
+  }, []);
 
   // Track if the page is visible
   useEffect(() => {
@@ -50,6 +76,17 @@ const GetKeyPage = () => {
 
     return () => clearInterval(timer);
   }, [active, key, navigate, phase]);
+
+  const copyToClipboard = (textToCopy: string) => {
+    navigator.clipboard.writeText(textToCopy).then(() => {
+      setCopied(true);
+      toast.success("Key wurde in die Zwischenablage kopiert");
+      setTimeout(() => setCopied(false), 2000);
+    }).catch(err => {
+      console.error("Failed to copy: ", err);
+      toast.error("Kopieren fehlgeschlagen");
+    });
+  };
 
   // Generate a random key with the new format
   const generateRandomKey = () => {
@@ -146,9 +183,10 @@ const GetKeyPage = () => {
   };
 
   // Check if a key already exists for this device
-  const checkExistingKey = async (hwid: string) => {
+  const checkExistingKey = async (hwid: string, ip: string | null) => {
     try {
-      const { data, error } = await supabase
+      // First try to find by HWID
+      const { data: hwidData, error: hwidError } = await supabase
         .from('keys')
         .select('key, expires_at')
         .eq('hwid', hwid)
@@ -156,12 +194,35 @@ const GetKeyPage = () => {
         .gt('expires_at', new Date().toISOString())
         .maybeSingle();
       
-      if (error && error.code !== 'PGRST116') {
-        console.error("Error checking existing key:", error);
-        return null;
+      if (hwidError && hwidError.code !== 'PGRST116') {
+        console.error("Error checking existing key by HWID:", hwidError);
       }
       
-      return data?.key || null;
+      if (hwidData?.key) {
+        return hwidData.key;
+      }
+      
+      // If not found by HWID and IP is available, try by IP
+      if (ip) {
+        const { data: ipData, error: ipError } = await supabase
+          .from('keys')
+          .select('key, expires_at')
+          .eq('ip_adress', ip)
+          .eq('used', false)
+          .gt('expires_at', new Date().toISOString())
+          .maybeSingle();
+        
+        if (ipError && ipError.code !== 'PGRST116') {
+          console.error("Error checking existing key by IP:", ipError);
+        }
+        
+        if (ipData?.key) {
+          return ipData.key;
+        }
+      }
+      
+      // No valid key found
+      return null;
     } catch (err) {
       console.error("Error checking existing key:", err);
       return null;
@@ -172,6 +233,14 @@ const GetKeyPage = () => {
     setIsLoading(true);
     
     try {
+      // If already blacklisted, deny access immediately
+      if (isBlacklisted) {
+        setError("Du bist auf der Blacklist. Zugriff verweigert.");
+        setPhase("blocked");
+        setIsLoading(false);
+        return;
+      }
+      
       // Check rate limiting
       const now = Date.now();
       const timeDiff = now - lastRequestTime;
@@ -195,6 +264,8 @@ const GetKeyPage = () => {
             });
           
           setError("Du hast zu viele Anfragen in kurzer Zeit gestellt. Deine Geräte-ID wurde gesperrt.");
+          setPhase("blocked");
+          setIsBlacklisted(true);
           setIsLoading(false);
           return;
         }
@@ -212,6 +283,8 @@ const GetKeyPage = () => {
       const blacklistReason = await checkBlacklist(deviceInfo.hwid, ip);
       if (blacklistReason) {
         setError(`Zugriff verweigert: ${blacklistReason}`);
+        setPhase("blocked");
+        setIsBlacklisted(true);
         setIsLoading(false);
         return;
       }
@@ -220,7 +293,7 @@ const GetKeyPage = () => {
       const location = ip ? await getLocationFromIP(ip) : "Unknown";
       
       // Check if a valid key already exists for this device
-      const existingKey = await checkExistingKey(deviceInfo.hwid);
+      const existingKey = await checkExistingKey(deviceInfo.hwid, ip);
       
       if (existingKey) {
         // Use existing key
@@ -267,6 +340,31 @@ const GetKeyPage = () => {
     }
   };
 
+  // If blacklisted, show denied access page
+  if (phase === "blocked") {
+    return (
+      <>
+        <NavBar />
+        <main className="flex flex-col items-center justify-center p-6 min-h-[75vh] text-center">
+          <h1 className="text-3xl font-bold mb-4 text-red-500">Zugriff verweigert</h1>
+          
+          <Alert variant="destructive" className="mb-6 max-w-md">
+            <AlertCircle className="h-5 w-5" />
+            <AlertTitle>Blacklist Eintrag gefunden</AlertTitle>
+            <AlertDescription>
+              {error || "Dein Gerät oder deine IP-Adresse wurde gesperrt."}
+            </AlertDescription>
+          </Alert>
+          
+          <p className="text-sorin-muted mt-4">
+            Wenn du glaubst, dass dies ein Fehler ist, kontaktiere bitte den Support.
+          </p>
+        </main>
+        <Footer />
+      </>
+    );
+  }
+
   // If we're on the key display page (accessed via URL with status and key params)
   if (status === "success" && keyParam) {
     return (
@@ -286,6 +384,14 @@ const GetKeyPage = () => {
           <div className="bg-sorin-accent/10 p-4 rounded-md border border-sorin-accent/30 mb-6">
             <p className="text-sm text-sorin-text mb-2">Dein Key:</p>
             <p className="font-mono text-lg font-bold text-sorin-highlight break-all">{keyParam}</p>
+            <Button 
+              onClick={() => copyToClipboard(keyParam)}
+              className="mt-3 bg-sorin-primary hover:bg-sorin-primary/80 border border-sorin-accent/30 text-sorin-text gap-2"
+              size="sm"
+            >
+              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+              {copied ? "Kopiert" : "Key kopieren"}
+            </Button>
           </div>
           
           <div className="text-sm text-sorin-text/70 max-w-md">

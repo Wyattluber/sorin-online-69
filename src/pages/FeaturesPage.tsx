@@ -1,10 +1,12 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const detailedFeatures = [
   {
@@ -32,6 +34,33 @@ const detailedFeatures = [
 ];
 
 const FeaturesPage = () => {
+  const [executionCount, setExecutionCount] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchExecutionCount = async () => {
+      try {
+        setLoading(true);
+        const { data, error } = await supabase
+          .from('executions')
+          .select('count')
+          .single();
+
+        if (error && error.code !== 'PGRST116') {
+          console.error("Error fetching execution count:", error);
+        } else if (data) {
+          setExecutionCount(data.count);
+        }
+      } catch (err) {
+        console.error("Failed to fetch execution count:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExecutionCount();
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
@@ -45,6 +74,26 @@ const FeaturesPage = () => {
               <p className="text-sorin-muted max-w-2xl mx-auto">
                 Entdecke die exklusiven Fähigkeiten von Sorin, die es zur ultimativen Exploiting-Lösung machen.
               </p>
+            </div>
+            
+            {/* Execution Stats Container */}
+            <div className="bg-sorin-primary/40 backdrop-blur-sm border-sorin-accent/20 hover:shadow-md hover:shadow-sorin-accent/10 rounded-lg p-6 mb-12">
+              <div className="flex flex-col md:flex-row items-center justify-between">
+                <div className="flex items-center gap-4 mb-4 md:mb-0">
+                  <div className="p-3 rounded-full bg-sorin-accent/20">
+                    <Users className="h-6 w-6 text-sorin-highlight" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-sorin-highlight">Script Nutzungsstatistik</h3>
+                    <p className="text-sorin-text/70">Gesamtausführungen des Sorin Scripts</p>
+                  </div>
+                </div>
+                <div className="bg-sorin-accent/10 px-6 py-3 rounded-lg border border-sorin-accent/30">
+                  <span className="text-2xl font-bold text-sorin-highlight">
+                    {loading ? "Wird geladen..." : executionCount.toLocaleString()}
+                  </span>
+                </div>
+              </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -69,14 +118,13 @@ const FeaturesPage = () => {
             </div>
             
             <div className="mt-16 text-center">
-  <a href="https://berlinrpvc.de" target="_blank" rel="noopener noreferrer">
-    <Button>
-      Zugang Erhalten
-      <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-    </Button>
-  </a>
-</div>
-
+              <a href="https://berlinrpvc.de" target="_blank" rel="noopener noreferrer">
+                <Button>
+                  Zugang Erhalten
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </Button>
+              </a>
+            </div>
           </div>
         </div>
       </main>

@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, MessageSquare } from "lucide-react";
+import { Menu, X } from "lucide-react";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -38,10 +38,19 @@ const NavBar = () => {
             <Link to="/privacy" className="px-3 py-2 text-sm font-medium text-sorin-text hover:text-sorin-highlight transition-colors">
               Privacy
             </Link>
-            <Button className="border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20 transition-colors">
-              <MessageSquare className="w-4 h-4 mr-2" />
-              <span>Coming Soon</span>
-            </Button>
+            <a href="https://discord.gg/sorin" target="_blank" rel="noopener noreferrer" className="border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20 transition-colors rounded-md px-4 py-2 inline-flex items-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                <circle cx="9" cy="12" r="1"/>
+                <circle cx="15" cy="12" r="1"/>
+                <path d="M7.5 7.2c-1 .1-3 .4-4.5 1.3-2 1.3-2 10.5-2 10.5s0 9.2 2 10.5c1.5.9 3.5 1.3 4.5 1.3"/>
+                <path d="M16.5 7.2c1 .1 3 .4 4.5 1.3 2 1.3 2 10.5 2 10.5s0 9.2-2 10.5c-1.5.9-3.5 1.3-4.5 1.3"/>
+                <path d="M16.5 7.2c-.3-1.4-1.4-2.8-2.5-3.9-1.2-1.2-3-2.3-4.5-2.3"/>
+                <path d="M7.5 7.2c.3-1.4 1.4-2.8 2.5-3.9 1.2-1.2 3-2.3 4.5-2.3"/>
+                <path d="M7.8 14.4c-.2 3.4.9 6 2.2 6 1.3 0 2.4-2.6 2.2-6s-1.2-5.8-2.2-5.8c-1 0-2.4 2.4-2.2 5.8Z"/>
+                <path d="M16.2 14.4c.2 3.4-.9 6-2.2 6-1.3 0-2.4-2.6-2.2-6S13 8.6 14 8.6c1 0 2.4 2.4 2.2 5.8Z"/>
+              </svg>
+              <span>Discord</span>
+            </a>
           </div>
           
           {/* Mobile menu button */}
@@ -100,10 +109,19 @@ const NavBar = () => {
               Privacy
             </Link>
             <div className="px-3 py-2">
-              <Button className="w-full border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20">
-                <MessageSquare className="w-4 h-4 mr-2" />
-                <span>Coming Soon</span>
-              </Button>
+              <a href="https://discord.gg/sorin" target="_blank" rel="noopener noreferrer" className="w-full border border-sorin-accent/30 bg-sorin-accent/10 text-sorin-text hover:bg-sorin-accent/20 transition-colors rounded-md px-4 py-2 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                  <circle cx="9" cy="12" r="1"/>
+                  <circle cx="15" cy="12" r="1"/>
+                  <path d="M7.5 7.2c-1 .1-3 .4-4.5 1.3-2 1.3-2 10.5-2 10.5s0 9.2 2 10.5c1.5.9 3.5 1.3 4.5 1.3"/>
+                  <path d="M16.5 7.2c1 .1 3 .4 4.5 1.3 2 1.3 2 10.5 2 10.5s0 9.2-2 10.5c-1.5.9-3.5 1.3-4.5 1.3"/>
+                  <path d="M16.5 7.2c-.3-1.4-1.4-2.8-2.5-3.9-1.2-1.2-3-2.3-4.5-2.3"/>
+                  <path d="M7.5 7.2c.3-1.4 1.4-2.8 2.5-3.9 1.2-1.2 3-2.3 4.5-2.3"/>
+                  <path d="M7.8 14.4c-.2 3.4.9 6 2.2 6 1.3 0 2.4-2.6 2.2-6s-1.2-5.8-2.2-5.8c-1 0-2.4 2.4-2.2 5.8Z"/>
+                  <path d="M16.2 14.4c.2 3.4-.9 6-2.2 6-1.3 0-2.4-2.6-2.2-6S13 8.6 14 8.6c1 0 2.4 2.4 2.2 5.8Z"/>
+                </svg>
+                <span>Discord</span>
+              </a>
             </div>
           </div>
         </div>

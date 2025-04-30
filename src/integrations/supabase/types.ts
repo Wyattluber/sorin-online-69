@@ -9,6 +9,30 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blacklist: {
+        Row: {
+          created_at: string | null
+          hwid: string
+          id: number
+          ip_address: string | null
+          reason: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          hwid: string
+          id?: number
+          ip_address?: string | null
+          reason?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          hwid?: string
+          id?: number
+          ip_address?: string | null
+          reason?: string | null
+        }
+        Relationships: []
+      }
       feedback: {
         Row: {
           created_at: string
@@ -82,26 +106,35 @@ export type Database = {
       }
       keys: {
         Row: {
+          blacklisted: boolean | null
           created_at: string | null
+          device_location: string | null
           expires_at: string | null
           hwid: string | null
           id: number
+          ip_adress: string | null
           key: string
           used: boolean | null
         }
         Insert: {
+          blacklisted?: boolean | null
           created_at?: string | null
+          device_location?: string | null
           expires_at?: string | null
           hwid?: string | null
           id?: number
+          ip_adress?: string | null
           key?: string
           used?: boolean | null
         }
         Update: {
+          blacklisted?: boolean | null
           created_at?: string | null
+          device_location?: string | null
           expires_at?: string | null
           hwid?: string | null
           id?: number
+          ip_adress?: string | null
           key?: string
           used?: boolean | null
         }

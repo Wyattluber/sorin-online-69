@@ -13,6 +13,7 @@ import NotFound from "./pages/NotFound";
 import GameDetails from "./pages/GameDetails";
 import Terms from "./pages/Terms";
 import GetKeyPage from "./pages/getkey";
+import KeyDisplay from "./pages/KeyDisplay";
 
 const queryClient = new QueryClient();
 
@@ -26,7 +27,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/getkey" element={<GetKeyPage />} />
-          <Route path="/keygen/:key" element={<GetKeyPage />} />
+          <Route path="/keygen/:key" element={<KeyDisplay />} />
           <Route path="/game/:id" element={<GameDetails />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/faq" element={<FAQPage />} />

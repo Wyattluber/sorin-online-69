@@ -12,6 +12,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import NotFound from "./pages/NotFound";
 import GameDetails from "./pages/GameDetails";
 import Terms from "./pages/Terms";
+import GetKeyPage from "/pages/getkey"
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Index />} />
+          <Route path="/getkey" element {<GetKeyPage />} />
           <Route path="/game/:id" element={<GameDetails />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/faq" element={<FAQPage />} />

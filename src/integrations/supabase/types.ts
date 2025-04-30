@@ -74,6 +74,33 @@ export type Database = {
         }
         Relationships: []
       }
+      keys: {
+        Row: {
+          created_at: string | null
+          expires_at: string | null
+          hwid: string | null
+          id: number
+          key: string
+          used: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string | null
+          hwid?: string | null
+          id?: number
+          key?: string
+          used?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string | null
+          hwid?: string | null
+          id?: number
+          key?: string
+          used?: boolean | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

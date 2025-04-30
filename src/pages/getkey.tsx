@@ -182,7 +182,7 @@ const GetKeyPage = () => {
     }
   };
 
-  // Check if a key already exists for this device
+  // Check if a key already exists for this device or IP
   const checkExistingKey = async (hwid: string, ip: string | null) => {
     try {
       // First try to find by HWID
@@ -289,10 +289,7 @@ const GetKeyPage = () => {
         return;
       }
       
-      // Get location data
-      const location = ip ? await getLocationFromIP(ip) : "Unknown";
-      
-      // Check if a valid key already exists for this device
+      // Check if a valid key already exists for this device or IP
       const existingKey = await checkExistingKey(deviceInfo.hwid, ip);
       
       if (existingKey) {
@@ -300,6 +297,9 @@ const GetKeyPage = () => {
         setKey(existingKey);
         toast.success("Bestehender Key gefunden!");
       } else {
+        // Get location data
+        const location = ip ? await getLocationFromIP(ip) : "Unknown";
+        
         // Generate a new random key
         const newKey = generateRandomKey();
         

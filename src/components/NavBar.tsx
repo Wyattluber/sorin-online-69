@@ -1,8 +1,8 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Menu, X, MessageSquare } from "lucide-react";
+import { Moon, Sun, Menu, X } from "lucide-react";
 
 // Navigation items
 const navItems = [
@@ -16,9 +16,25 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
+  // Load theme preference from localStorage on initial mount
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    
+    if (savedTheme) {
+      setIsDark(savedTheme === "dark");
+      document.documentElement.classList.toggle("dark", savedTheme === "dark");
+    } else {
+      setIsDark(prefersDark);
+      document.documentElement.classList.toggle("dark", prefersDark);
+    }
+  }, []);
+
   const toggleTheme = () => {
+    const newTheme = !isDark ? "dark" : "light";
     setIsDark(!isDark);
     document.documentElement.classList.toggle("dark");
+    localStorage.setItem("theme", newTheme);
   };
 
   return (
@@ -52,13 +68,13 @@ const NavBar = () => {
           {/* Right Side Actions */}
           <div className="hidden md:flex items-center space-x-4">
             <a 
-              href="https://discord.gg/5jVRsrj8" 
+              href="https://discord.gg/rGRuta76s5" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-sorin-text hover:text-sorin-highlight transition-colors"
               title="Join our Discord"
             >
-              <MessageSquare className="h-5 w-5" />
+              <img src="/lovable-uploads/4647c9a4-8e27-4278-bd5b-4822fea03a84.png" alt="Discord Logo" className="h-6 w-6" />
             </a>
 
             {/* Theme Toggle */}
@@ -122,13 +138,13 @@ const NavBar = () => {
             <div className="flex items-center justify-between px-3 py-2">
               <div className="flex items-center space-x-4">
                 <a 
-                  href="https://discord.gg/5jVRsrj8" 
+                  href="https://discord.gg/rGRuta76s5" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-sorin-text hover:text-sorin-highlight transition-colors"
                   title="Join our Discord"
                 >
-                  <MessageSquare className="h-5 w-5" />
+                  <img src="/lovable-uploads/4647c9a4-8e27-4278-bd5b-4822fea03a84.png" alt="Discord Logo" className="h-6 w-6" />
                 </a>
                 <Button
                   variant="outline"

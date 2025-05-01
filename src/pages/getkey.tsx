@@ -34,12 +34,12 @@ const GetKeyPage = () => {
         const ip = await getIPAddress();
         
         if (ip) {
-          const blacklistResult = await checkBlacklist(ip);
+          const blacklistReason = await checkBlacklist(ip);
           
-          if (blacklistResult) {
+          if (blacklistReason) {
             setIsBlacklisted(true);
             setPhase("blocked");
-            setError(`Zugriff verweigert: ${blacklistResult}`);
+            setError(`Zugriff verweigert: ${blacklistReason}`);
           }
         }
       } catch (err) {
@@ -208,12 +208,13 @@ const GetKeyPage = () => {
           const ip = await getIPAddress();
           
           if (ip) {
-            // Add to blacklist
+            // Add to blacklist - now including a dummy hwid since it's required
             await supabase
               .from('blacklist')
               .insert({
                 ip_address: ip,
-                reason: "Rate limit exceeded: Too many key requests"
+                reason: "Rate limit exceeded: Too many key requests",
+                hwid: "deprecated"  // Adding a placeholder value for the required hwid field
               });
           }
           
@@ -268,7 +269,8 @@ const GetKeyPage = () => {
             used: false,
             expires_at: expiresAt.toISOString(),
             ip_adress: ip, // Note: Column name has the typo in it ("adress" not "address")
-            device_location: location
+            device_location: location,
+            hwid: null
           });
           
         if (saveError) {

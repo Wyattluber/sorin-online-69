@@ -69,16 +69,21 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border transition-colors;
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground transition-colors duration-500;
   }
 
   body.dark {
     background-image: radial-gradient(circle at 20% 20%, #1E293B 0%, #0F1729 100%);
     background-attachment: fixed;
+  }
+  
+  /* Theme transition animation */
+  html.transitioning * {
+    transition: background-color 0.5s ease, border-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease, opacity 0.5s ease, transform 0.5s ease;
   }
 }
 
@@ -88,11 +93,11 @@
   }
   
   .sorin-border {
-    @apply border border-sorin-accent/30 shadow-sm shadow-sorin-accent/20;
+    @apply border border-gray-200 shadow-sm shadow-gray-200 dark:border-sorin-accent/30 dark:shadow-sorin-accent/20;
   }
   
   .sorin-button {
-    @apply px-8 py-3 bg-gradient-to-r from-sorin-accent to-sorin-highlight text-white rounded-md hover:opacity-90 transition-all duration-300 font-medium tracking-wide;
+    @apply px-8 py-3 bg-gradient-to-r from-purple-600 to-purple-700 dark:from-sorin-accent dark:to-sorin-highlight text-white rounded-md hover:opacity-90 transition-all duration-300 font-medium tracking-wide;
   }
   
   .sorin-section {
@@ -110,6 +115,15 @@
   50% { filter: drop-shadow(0 0 15px rgba(139, 92, 246, 0.8)); }
 }
 
+@keyframes theme-fade {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite, pulse-glow 3s ease-in-out infinite;
+}
+
+.theme-transition {
+  animation: theme-fade 0.5s ease-in-out;
 }

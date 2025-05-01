@@ -43,26 +43,26 @@ const FAQPage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       <NavBar />
-      <main className="flex-grow pt-16">
+      <main className="flex-grow pt-16 bg-white dark:bg-transparent transition-colors duration-500">
         <div className="sorin-section py-20">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
               <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sorin-accent to-sorin-highlight mb-6">
                 Häufig Gestellte Fragen
               </h1>
-              <p className="text-sorin-muted max-w-2xl mx-auto">
+              <p className="text-gray-700 dark:text-sorin-muted max-w-2xl mx-auto transition-colors duration-300">
                 Finde Antworten auf Fragen über Sorins fortschrittliche Fähigkeiten und exklusive Funktionen für Roblox.
               </p>
             </div>
             
-            <div className="bg-sorin-primary/30 backdrop-blur-sm sorin-border rounded-lg p-6">
+            <div className="bg-gray-100 dark:bg-sorin-primary/30 backdrop-blur-sm border border-gray-200 dark:border-sorin-accent/20 rounded-lg p-6 shadow-sm transition-colors duration-300">
               <Accordion type="single" collapsible className="w-full">
                 {faqs.map((faq, index) => (
-                  <AccordionItem key={index} value={`item-${index}`} className="border-sorin-accent/20">
-                    <AccordionTrigger className="text-sorin-text hover:text-sorin-highlight">
+                  <AccordionItem key={index} value={`item-${index}`} className="border-gray-300 dark:border-sorin-accent/20 transition-colors duration-300">
+                    <AccordionTrigger className="text-gray-900 hover:text-purple-700 dark:text-sorin-text dark:hover:text-sorin-highlight transition-colors duration-300">
                       {faq.question}
                     </AccordionTrigger>
-                    <AccordionContent className="text-sorin-muted">
+                    <AccordionContent className="text-gray-700 dark:text-sorin-muted transition-colors duration-300">
                       {faq.answer}
                     </AccordionContent>
                   </AccordionItem>
@@ -71,13 +71,13 @@ const FAQPage = () => {
             </div>
             
             <div className="mt-16 text-center">
-              <p className="text-sorin-muted mb-4">
+              <p className="text-gray-700 dark:text-sorin-muted mb-4 transition-colors duration-300">
                 Hast du weitere Fragen?
               </p>
-              <a href="mailto:contact@sorin-script.com" className="text-sorin-accent hover:text-sorin-highlight underline">
+              <a href="mailto:contact@sorin-script.com" className="text-purple-700 hover:text-purple-900 dark:text-sorin-accent dark:hover:text-sorin-highlight underline transition-colors duration-300">
                 Kontaktiere uns
               </a>
-              <p className="mt-4 text-sorin-muted text-sm">
+              <p className="mt-4 text-gray-600 dark:text-sorin-muted text-sm transition-colors duration-300">
                 Oder besuche bald unseren Discord-Server für direkten Support
               </p>
             </div>

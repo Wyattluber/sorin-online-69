@@ -159,9 +159,8 @@ const GetKeyPage = () => {
     // Generate the URL that users will be redirected to after Linkvertise
     const redirectUrl = `${window.location.origin}/keyredirect/${newKey}`;
     
-    // This is the URL for Linkvertise, replace '123456' with your actual Linkvertise ID
-    // and replace the target URL with the redirectUrl
-    const linkvertiseUrl = `https://link-to.net/123456/${encodeURIComponent(redirectUrl)}`;
+    // Use the actual Linkvertise URL provided by the user
+    const linkvertiseUrl = `https://link-target.net/1345492/sorin-key1?r=${encodeURIComponent(redirectUrl)}`;
     
     // Redirect to Linkvertise
     window.location.href = linkvertiseUrl;
@@ -345,13 +344,21 @@ const GetKeyPage = () => {
                 <p className="mb-6 text-gray-700 dark:text-sorin-text">
                   Du bekommst einen Key, gültig für 1 Stunde.
                 </p>
-                <Button 
-                  onClick={handleGenerateKey} 
-                  disabled={isLoading}
-                  className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight"
-                >
-                  {isLoading ? "Generiere Key..." : "Key generieren"}
-                </Button>
+                <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md">
+                  <p className="mb-4 text-gray-800 dark:text-sorin-text">
+                    Um deinen Key zu generieren, musst du einen kurzen Werbeartikel anschauen.
+                  </p>
+                  <Button 
+                    onClick={handleGenerateKey} 
+                    disabled={isLoading}
+                    className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight"
+                  >
+                    {isLoading ? "Generiere Key..." : "Key generieren"}
+                  </Button>
+                  <p className="mt-4 text-xs text-gray-500 dark:text-sorin-muted">
+                    Nach der Werbung wirst du automatisch zu deinem Key weitergeleitet.
+                  </p>
+                </div>
               </>
             )}
 

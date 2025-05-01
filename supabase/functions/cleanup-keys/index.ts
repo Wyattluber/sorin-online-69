@@ -28,11 +28,14 @@ serve(async (req) => {
     const { data, error } = await supabase
       .from('keys')
       .delete()
-      .lt('expires_at', new Date().toISOString());
+      .lt('expires_at', new Date().toISOString())
+      .select();
 
     if (error) {
       throw error;
     }
+
+    console.log(`Successfully cleaned up ${data?.length || 0} expired keys`);
 
     return new Response(
       JSON.stringify({

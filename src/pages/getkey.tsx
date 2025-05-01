@@ -31,11 +31,10 @@ const GetKeyPage = () => {
   useEffect(() => {
     const checkBlacklistStatus = async () => {
       try {
-        const deviceInfo = collectDeviceInfo();
         const ip = await getIPAddress();
         
-        if (deviceInfo && ip) {
-          const blacklistResult = await checkBlacklist(deviceInfo.hwid, ip);
+        if (ip) {
+          const blacklistResult = await checkBlacklist(ip);
           
           if (blacklistResult) {
             setIsBlacklisted(true);
@@ -126,52 +125,24 @@ const GetKeyPage = () => {
     }
   };
 
-  // Collect device information
-  const collectDeviceInfo = () => {
-    const hwid = "HWID_" + btoa(navigator.userAgent + Date.now());
-    
-    return {
-      hwid,
-      userAgent: navigator.userAgent,
-      language: navigator.language,
-      timestamp: new Date().toISOString()
-    };
-  };
-
-  // Check if HWID is blacklisted
-  const checkBlacklist = async (hwid: string, ip: string | null) => {
+  // Check if IP is blacklisted
+  const checkBlacklist = async (ip: string | null) => {
     try {
-      // Check by HWID
-      const { data: hwidData, error: hwidError } = await supabase
+      if (!ip) return null;
+      
+      // Check by IP
+      const { data: ipData, error: ipError } = await supabase
         .from('blacklist')
         .select('*')
-        .eq('hwid', hwid)
+        .eq('ip_address', ip)
         .maybeSingle();
       
-      if (hwidError && hwidError.code !== 'PGRST116') {
-        console.error("Error checking blacklist by HWID:", hwidError);
+      if (ipError && ipError.code !== 'PGRST116') {
+        console.error("Error checking blacklist by IP:", ipError);
       }
       
-      // If found by HWID, return reason
-      if (hwidData) {
-        return hwidData.reason || "HWID is blacklisted";
-      }
-      
-      // If IP provided, also check by IP
-      if (ip) {
-        const { data: ipData, error: ipError } = await supabase
-          .from('blacklist')
-          .select('*')
-          .eq('ip_address', ip)
-          .maybeSingle();
-        
-        if (ipError && ipError.code !== 'PGRST116') {
-          console.error("Error checking blacklist by IP:", ipError);
-        }
-        
-        if (ipData) {
-          return ipData.reason || "IP address is blacklisted";
-        }
+      if (ipData) {
+        return ipData.reason || "IP address is blacklisted";
       }
       
       // Not blacklisted
@@ -182,43 +153,26 @@ const GetKeyPage = () => {
     }
   };
 
-  // Check if a key already exists for this device or IP
-  const checkExistingKey = async (hwid: string, ip: string | null) => {
+  // Check if a key already exists for this IP
+  const checkExistingKey = async (ip: string | null) => {
     try {
-      // First try to find by HWID
-      const { data: hwidData, error: hwidError } = await supabase
+      if (!ip) return null;
+      
+      // Look for a key associated with this IP
+      const { data: ipData, error: ipError } = await supabase
         .from('keys')
         .select('key, expires_at')
-        .eq('hwid', hwid)
+        .eq('ip_adress', ip)
         .eq('used', false)
         .gt('expires_at', new Date().toISOString())
         .maybeSingle();
       
-      if (hwidError && hwidError.code !== 'PGRST116') {
-        console.error("Error checking existing key by HWID:", hwidError);
+      if (ipError && ipError.code !== 'PGRST116') {
+        console.error("Error checking existing key by IP:", ipError);
       }
       
-      if (hwidData?.key) {
-        return hwidData.key;
-      }
-      
-      // If not found by HWID and IP is available, try by IP
-      if (ip) {
-        const { data: ipData, error: ipError } = await supabase
-          .from('keys')
-          .select('key, expires_at')
-          .eq('ip_adress', ip)
-          .eq('used', false)
-          .gt('expires_at', new Date().toISOString())
-          .maybeSingle();
-        
-        if (ipError && ipError.code !== 'PGRST116') {
-          console.error("Error checking existing key by IP:", ipError);
-        }
-        
-        if (ipData?.key) {
-          return ipData.key;
-        }
+      if (ipData?.key) {
+        return ipData.key;
       }
       
       // No valid key found
@@ -251,19 +205,19 @@ const GetKeyPage = () => {
         
         // If more than 5 requests in 10 seconds, add to blacklist
         if (requestCount >= 4) {  // This will be the 5th request
-          const deviceInfo = collectDeviceInfo();
           const ip = await getIPAddress();
           
-          // Add to blacklist
-          await supabase
-            .from('blacklist')
-            .insert({
-              hwid: deviceInfo.hwid,
-              ip_address: ip,
-              reason: "Rate limit exceeded: Too many key requests"
-            });
+          if (ip) {
+            // Add to blacklist
+            await supabase
+              .from('blacklist')
+              .insert({
+                ip_address: ip,
+                reason: "Rate limit exceeded: Too many key requests"
+              });
+          }
           
-          setError("Du hast zu viele Anfragen in kurzer Zeit gestellt. Deine Geräte-ID wurde gesperrt.");
+          setError("Du hast zu viele Anfragen in kurzer Zeit gestellt. Deine IP-Adresse wurde gesperrt.");
           setPhase("blocked");
           setIsBlacklisted(true);
           setIsLoading(false);
@@ -275,12 +229,11 @@ const GetKeyPage = () => {
         setLastRequestTime(now);
       }
       
-      // Collect device info
-      const deviceInfo = collectDeviceInfo();
+      // Get IP address
       const ip = await getIPAddress();
       
       // Check if blacklisted
-      const blacklistReason = await checkBlacklist(deviceInfo.hwid, ip);
+      const blacklistReason = await checkBlacklist(ip);
       if (blacklistReason) {
         setError(`Zugriff verweigert: ${blacklistReason}`);
         setPhase("blocked");
@@ -289,8 +242,8 @@ const GetKeyPage = () => {
         return;
       }
       
-      // Check if a valid key already exists for this device or IP
-      const existingKey = await checkExistingKey(deviceInfo.hwid, ip);
+      // Check if a valid key already exists for this IP
+      const existingKey = await checkExistingKey(ip);
       
       if (existingKey) {
         // Use existing key
@@ -312,7 +265,6 @@ const GetKeyPage = () => {
           .from('keys')
           .insert({
             key: newKey,
-            hwid: deviceInfo.hwid,
             used: false,
             expires_at: expiresAt.toISOString(),
             ip_adress: ip, // Note: Column name has the typo in it ("adress" not "address")
@@ -352,7 +304,7 @@ const GetKeyPage = () => {
             <AlertCircle className="h-5 w-5" />
             <AlertTitle>Blacklist Eintrag gefunden</AlertTitle>
             <AlertDescription>
-              {error || "Dein Gerät oder deine IP-Adresse wurde gesperrt."}
+              {error || "Deine IP-Adresse wurde gesperrt."}
             </AlertDescription>
           </Alert>
           
@@ -395,7 +347,7 @@ const GetKeyPage = () => {
           </div>
           
           <div className="text-sm text-sorin-text/70 max-w-md">
-            <p>Dieser Key ist nur für dein Gerät gültig und läuft nach 1 Stunde ab.</p>
+            <p>Dieser Key läuft nach 1 Stunde ab.</p>
             <p className="mt-2">Kopiere den Key und füge ihn in die Sorin-Anwendung ein.</p>
           </div>
         </main>
@@ -413,7 +365,7 @@ const GetKeyPage = () => {
         {phase === "start" && (
           <>
             <p className="mb-6 text-sorin-text">
-              Du bekommst einen Key, gültig für 1 Stunde – nur für dein Gerät.
+              Du bekommst einen Key, gültig für 1 Stunde.
             </p>
             <Button onClick={handleGenerateKey} disabled={isLoading}>
               {isLoading ? "Generiere Key..." : "Key generieren"}

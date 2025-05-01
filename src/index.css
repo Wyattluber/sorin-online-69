@@ -5,35 +5,65 @@
 
 @layer base {
   :root {
-    --background: 222 47% 11%;
-    --foreground: 210 40% 98%;
-
-    --card: 222 47% 11%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222 47% 11%;
-    --popover-foreground: 210 40% 98%;
-
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+    
     --primary: 262 83% 65%;
     --primary-foreground: 210 40% 98%;
-
-    --secondary: 217 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
+    
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
+    
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
+    
     --accent: 262 83% 65%;
     --accent-foreground: 210 40% 98%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 262 83% 65%;
+    
+    --radius: 0.5rem;
+  }
 
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+    
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+    
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+    
+    --primary: 262 83% 65%;
+    --primary-foreground: 210 40% 98%;
+    
+    --secondary: 217 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    
+    --muted: 217 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    
+    --accent: 262 83% 65%;
+    --accent-foreground: 210 40% 98%;
+    
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
-
+    
     --border: 217 32.6% 17.5%;
     --input: 217 32.6% 17.5%;
     --ring: 262 83% 65%;
-
-    --radius: 0.5rem;
   }
 }
 
@@ -43,7 +73,10 @@
   }
 
   body {
-    @apply bg-sorin-dark text-sorin-text;
+    @apply bg-background text-foreground;
+  }
+
+  body.dark {
     background-image: radial-gradient(circle at 20% 20%, #1E293B 0%, #0F1729 100%);
     background-attachment: fixed;
   }

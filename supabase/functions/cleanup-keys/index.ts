@@ -1,63 +1,58 @@
 
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.38.0';
+// Follow this setup guide to integrate the Deno language server with your editor:
+// https://deno.land/manual/getting_started/setup_your_environment
+// This enables autocomplete, go to definition, etc.
+
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.43.1";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
 };
 
-// This Edge Function will be called periodically to clean up expired keys
-Deno.serve(async (req) => {
+serve(async (req) => {
   // Handle CORS preflight requests
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
-    // Create Supabase client
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
+    // Create a Supabase client
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL") ?? "",
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? ""
     );
-    
-    // Get current timestamp for logging
-    const now = new Date().toISOString();
-    console.log(`[${now}] Starting cleanup of expired keys`);
-    
+
     // Delete expired keys
-    const { data, error } = await supabaseClient
+    const { data, error } = await supabase
       .from('keys')
       .delete()
-      .lt('expires_at', new Date().toISOString())
-      .select();
-    
-    if (error) throw error;
-    
-    const deletedCount = data ? data.length : 0;
-    console.log(`[${now}] Successfully deleted ${deletedCount} expired keys`);
-    
+      .lt('expires_at', new Date().toISOString());
+
+    if (error) {
+      throw error;
+    }
+
     return new Response(
-      JSON.stringify({ 
-        success: true, 
-        message: `Expired keys cleaned up successfully. Deleted ${deletedCount} keys.`,
-        deletedCount
+      JSON.stringify({
+        message: "Expired keys cleanup completed successfully",
+        deletedCount: data?.length || 0
       }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, 
         status: 200 
-      },
+      }
     );
-    
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    console.error('Error cleaning up expired keys:', errorMessage);
+    console.error("Error cleaning up expired keys:", error);
     
     return new Response(
-      JSON.stringify({ success: false, error: errorMessage }),
+      JSON.stringify({ error: error.message }),
       { 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        status: 500
-      },
+        headers: { ...corsHeaders, "Content-Type": "application/json" }, 
+        status: 500 
+      }
     );
   }
 });

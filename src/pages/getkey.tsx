@@ -14,9 +14,7 @@ const GetKeyPage = () => {
   const status = searchParams.get("status");
   const keyParam = searchParams.get("key");
   
-  const [seconds, setSeconds] = useState(10);
   const [key, setKey] = useState<string | null>(null);
-  const [active, setActive] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [phase, setPhase] = useState<"start" | "waiting" | "done" | "blocked">("start");
   const [isLoading, setIsLoading] = useState(false);
@@ -26,9 +24,6 @@ const GetKeyPage = () => {
   const [isBlacklisted, setIsBlacklisted] = useState(false);
 
   const navigate = useNavigate();
-  
-  // Check for dark mode
-  const isDarkMode = document.documentElement.classList.contains("dark");
 
   // Check for blacklist status as soon as the component mounts
   useEffect(() => {
@@ -52,32 +47,6 @@ const GetKeyPage = () => {
     
     checkBlacklistStatus();
   }, []);
-
-  // Track if the page is visible
-  useEffect(() => {
-    const handleVisibility = () => setActive(!document.hidden);
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, []);
-
-  // Timer effect that only runs when page is active
-  useEffect(() => {
-    if (!active || !key || phase !== "waiting") return;
-
-    const timer = setInterval(() => {
-      setSeconds((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          setPhase("done");
-          navigate(`/keygen/${key}`);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, [active, key, navigate, phase]);
 
   const copyToClipboard = (textToCopy: string) => {
     navigator.clipboard.writeText(textToCopy).then(() => {
@@ -186,6 +155,18 @@ const GetKeyPage = () => {
     }
   };
 
+  const redirectToLinkvertise = (newKey: string) => {
+    // Generate the URL that users will be redirected to after Linkvertise
+    const redirectUrl = `${window.location.origin}/keyredirect/${newKey}`;
+    
+    // This is the URL for Linkvertise, replace '123456' with your actual Linkvertise ID
+    // and replace the target URL with the redirectUrl
+    const linkvertiseUrl = `https://link-to.net/123456/${encodeURIComponent(redirectUrl)}`;
+    
+    // Redirect to Linkvertise
+    window.location.href = linkvertiseUrl;
+  };
+
   const handleGenerateKey = async () => {
     setIsLoading(true);
     
@@ -211,13 +192,13 @@ const GetKeyPage = () => {
           const ip = await getIPAddress();
           
           if (ip) {
-            // Add to blacklist - now including a dummy hwid since it's required
+            // Add to blacklist - including a placeholder value for the required hwid field
             await supabase
               .from('blacklist')
               .insert({
                 ip_address: ip,
                 reason: "Rate limit exceeded: Too many key requests",
-                hwid: "deprecated"  // Adding a placeholder value for the required hwid field
+                hwid: "placeholder"  // Adding a placeholder value for the required hwid field
               });
           }
           
@@ -253,6 +234,8 @@ const GetKeyPage = () => {
         // Use existing key
         setKey(existingKey);
         toast.success("Bestehender Key gefunden!");
+        // Redirect to Linkvertise with the existing key
+        redirectToLinkvertise(existingKey);
       } else {
         // Get location data
         const location = ip ? await getLocationFromIP(ip) : "Unknown";
@@ -264,7 +247,7 @@ const GetKeyPage = () => {
         const expiresAt = new Date();
         expiresAt.setHours(expiresAt.getHours() + 1);
         
-        // Save key to Supabase with IP and location
+        // Save key to Supabase with IP and location, with hwid as null
         const { error: saveError } = await supabase
           .from('keys')
           .insert({
@@ -282,9 +265,12 @@ const GetKeyPage = () => {
         
         setKey(newKey);
         toast.success("Key wurde erfolgreich generiert");
+        
+        // Redirect to Linkvertise with the new key
+        redirectToLinkvertise(newKey);
       }
       
-      // Start countdown
+      // Update phase
       setPhase("waiting");
       setError(null);
       
@@ -373,13 +359,10 @@ const GetKeyPage = () => {
               <>
                 <p className="mb-2 text-lg text-gray-900 dark:text-sorin-text">Key wurde erstellt!</p>
                 <p className="mb-2 text-gray-800 dark:text-sorin-text">
-                  Bitte warte <strong>{seconds}</strong> Sekunden…
+                  Du wirst weitergeleitet...
                 </p>
                 <p className="text-sm text-gray-700 dark:text-sorin-text">
-                  Die Weiterleitung startet automatisch. Verlasse die Seite nicht.
-                </p>
-                <p className="mt-4 text-xs text-gray-500 dark:text-sorin-text/70">
-                  Der Timer pausiert automatisch, wenn du zu einem anderen Tab wechselst.
+                  Bitte verlasse die Seite nicht.
                 </p>
               </>
             )}

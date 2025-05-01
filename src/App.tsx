@@ -14,6 +14,7 @@ import GameDetails from "./pages/GameDetails";
 import Terms from "./pages/Terms";
 import GetKeyPage from "./pages/getkey";
 import KeyDisplay from "./pages/KeyDisplay";
+import KeyRedirect from "./pages/KeyRedirect";
 
 const queryClient = new QueryClient();
 
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/getkey" element={<GetKeyPage />} />
           <Route path="/keygen/:key" element={<KeyDisplay />} />
+          <Route path="/keyredirect/:key" element={<KeyRedirect />} />
           <Route path="/game/:id" element={<GameDetails />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/faq" element={<FAQPage />} />

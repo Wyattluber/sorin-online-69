@@ -26,6 +26,9 @@ const GetKeyPage = () => {
   const [isBlacklisted, setIsBlacklisted] = useState(false);
 
   const navigate = useNavigate();
+  
+  // Check for dark mode
+  const isDarkMode = document.documentElement.classList.contains("dark");
 
   // Check for blacklist status as soon as the component mounts
   useEffect(() => {
@@ -294,106 +297,105 @@ const GetKeyPage = () => {
     }
   };
 
-  // If blacklisted, show denied access page
-  if (phase === "blocked") {
-    return (
-      <>
-        <NavBar />
-        <main className="flex flex-col items-center justify-center p-6 min-h-[75vh] text-center">
-          <h1 className="text-3xl font-bold mb-4 text-red-500">Zugriff verweigert</h1>
-          
-          <Alert variant="destructive" className="mb-6 max-w-md">
-            <AlertCircle className="h-5 w-5" />
-            <AlertTitle>Blacklist Eintrag gefunden</AlertTitle>
-            <AlertDescription>
-              {error || "Deine IP-Adresse wurde gesperrt."}
-            </AlertDescription>
-          </Alert>
-          
-          <p className="text-sorin-muted mt-4">
-            Wenn du glaubst, dass dies ein Fehler ist, kontaktiere bitte den Support.
-          </p>
-        </main>
-        <Footer />
-      </>
-    );
-  }
-
-  // If we're on the key display page (accessed via URL with status and key params)
-  if (status === "success" && keyParam) {
-    return (
-      <>
-        <NavBar />
-        <main className="flex flex-col items-center justify-center p-6 min-h-[75vh] text-center">
-          <h1 className="text-3xl font-bold mb-4">Dein Key wurde generiert</h1>
-          
-          <Alert className="mb-6 max-w-md">
-            <Check className="h-5 w-5 text-green-500" />
-            <AlertTitle>Erfolg!</AlertTitle>
-            <AlertDescription>
-              Dein persönlicher Key wurde erfolgreich erstellt.
-            </AlertDescription>
-          </Alert>
-          
-          <div className="bg-sorin-accent/10 p-4 rounded-md border border-sorin-accent/30 mb-6">
-            <p className="text-sm text-sorin-text mb-2">Dein Key:</p>
-            <p className="font-mono text-lg font-bold text-sorin-highlight break-all">{keyParam}</p>
-            <Button 
-              onClick={() => copyToClipboard(keyParam)}
-              className="mt-3 bg-sorin-primary hover:bg-sorin-primary/80 border border-sorin-accent/30 text-sorin-text gap-2"
-              size="sm"
-            >
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-              {copied ? "Kopiert" : "Key kopieren"}
-            </Button>
-          </div>
-          
-          <div className="text-sm text-sorin-text/70 max-w-md">
-            <p>Dieser Key läuft nach 1 Stunde ab.</p>
-            <p className="mt-2">Kopiere den Key und füge ihn in die Sorin-Anwendung ein.</p>
-          </div>
-        </main>
-        <Footer />
-      </>
-    );
-  }
-
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <NavBar />
-      <main className="flex flex-col items-center justify-center p-6 min-h-[75vh] text-center">
-        <h1 className="text-3xl font-bold mb-4">Sichere dir deinen persönlichen Key</h1>
-
-        {phase === "start" && (
+      <main className="flex flex-col items-center justify-center p-6 flex-grow text-center mt-16">
+        {/* If blacklisted, show denied access page */}
+        {phase === "blocked" ? (
           <>
-            <p className="mb-6 text-sorin-text">
-              Du bekommst einen Key, gültig für 1 Stunde.
+            <h1 className="text-3xl font-bold mb-4 text-red-500">Zugriff verweigert</h1>
+            
+            <Alert variant="destructive" className="mb-6 max-w-md">
+              <AlertCircle className="h-5 w-5" />
+              <AlertTitle>Blacklist Eintrag gefunden</AlertTitle>
+              <AlertDescription>
+                {error || "Deine IP-Adresse wurde gesperrt."}
+              </AlertDescription>
+            </Alert>
+            
+            <p className="text-gray-600 dark:text-sorin-muted mt-4">
+              Wenn du glaubst, dass dies ein Fehler ist, kontaktiere bitte den Support.
             </p>
-            <Button onClick={handleGenerateKey} disabled={isLoading}>
-              {isLoading ? "Generiere Key..." : "Key generieren"}
-            </Button>
           </>
-        )}
-
-        {phase === "waiting" && (
+        ) : status === "success" && keyParam ? (
+          // If we're on the key display page (accessed via URL with status and key params)
           <>
-            <p className="mb-2 text-lg text-sorin-text">Key wurde erstellt!</p>
-            <p className="mb-2 text-sorin-text">Bitte warte <strong>{seconds}</strong> Sekunden…</p>
-            <p className="text-sm text-sorin-text">Die Weiterleitung startet automatisch. Verlasse die Seite nicht.</p>
-            <p className="mt-4 text-xs text-sorin-text/70">Der Timer pausiert automatisch, wenn du zu einem anderen Tab wechselst.</p>
+            <h1 className="text-3xl font-bold mb-4">Dein Key wurde generiert</h1>
+            
+            <Alert className="mb-6 max-w-md bg-white dark:bg-sorin-primary border-green-200 dark:border-sorin-accent/30">
+              <Check className="h-5 w-5 text-green-500" />
+              <AlertTitle className="text-gray-900 dark:text-sorin-text">Erfolg!</AlertTitle>
+              <AlertDescription className="text-gray-700 dark:text-sorin-text/80">
+                Dein persönlicher Key wurde erfolgreich erstellt.
+              </AlertDescription>
+            </Alert>
+            
+            <div className="bg-gray-100 dark:bg-sorin-accent/10 p-4 rounded-md border border-gray-200 dark:border-sorin-accent/30 mb-6">
+              <p className="text-sm text-gray-700 dark:text-sorin-text mb-2">Dein Key:</p>
+              <p className="font-mono text-lg font-bold text-gray-900 dark:text-sorin-highlight break-all">{keyParam}</p>
+              <Button 
+                onClick={() => copyToClipboard(keyParam)}
+                className="mt-3 bg-purple-600 hover:bg-purple-700 dark:bg-sorin-primary dark:hover:bg-sorin-primary/80 dark:border dark:border-sorin-accent/30 text-white dark:text-sorin-text gap-2"
+                size="sm"
+              >
+                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+                {copied ? "Kopiert" : "Key kopieren"}
+              </Button>
+            </div>
+            
+            <div className="text-sm text-gray-600 dark:text-sorin-text/70 max-w-md">
+              <p>Dieser Key läuft nach 1 Stunde ab.</p>
+              <p className="mt-2">Kopiere den Key und füge ihn in die Sorin-Anwendung ein.</p>
+            </div>
           </>
-        )}
+        ) : (
+          // Default view - key generation form
+          <>
+            <h1 className="text-3xl font-bold mb-4">Sichere dir deinen persönlichen Key</h1>
 
-        {error && (
-          <Alert variant="destructive" className="mt-6 max-w-md">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Fehler</AlertTitle>
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
+            {phase === "start" && (
+              <>
+                <p className="mb-6 text-gray-700 dark:text-sorin-text">
+                  Du bekommst einen Key, gültig für 1 Stunde.
+                </p>
+                <Button 
+                  onClick={handleGenerateKey} 
+                  disabled={isLoading}
+                  className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight"
+                >
+                  {isLoading ? "Generiere Key..." : "Key generieren"}
+                </Button>
+              </>
+            )}
+
+            {phase === "waiting" && (
+              <>
+                <p className="mb-2 text-lg text-gray-900 dark:text-sorin-text">Key wurde erstellt!</p>
+                <p className="mb-2 text-gray-800 dark:text-sorin-text">
+                  Bitte warte <strong>{seconds}</strong> Sekunden…
+                </p>
+                <p className="text-sm text-gray-700 dark:text-sorin-text">
+                  Die Weiterleitung startet automatisch. Verlasse die Seite nicht.
+                </p>
+                <p className="mt-4 text-xs text-gray-500 dark:text-sorin-text/70">
+                  Der Timer pausiert automatisch, wenn du zu einem anderen Tab wechselst.
+                </p>
+              </>
+            )}
+
+            {error && (
+              <Alert variant="destructive" className="mt-6 max-w-md">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Fehler</AlertTitle>
+                <AlertDescription>{error}</AlertDescription>
+              </Alert>
+            )}
+          </>
         )}
       </main>
       <Footer />
-    </>
+    </div>
   );
 };
 

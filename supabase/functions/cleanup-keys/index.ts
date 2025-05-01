@@ -20,13 +20,28 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     );
     
+    // Get current timestamp for logging
+    const now = new Date().toISOString();
+    console.log(`[${now}] Starting cleanup of expired keys`);
+    
     // Delete expired keys
-    const { error } = await supabaseClient.rpc('delete_expired_keys');
+    const { data, error } = await supabaseClient
+      .from('keys')
+      .delete()
+      .lt('expires_at', new Date().toISOString())
+      .select();
     
     if (error) throw error;
     
+    const deletedCount = data ? data.length : 0;
+    console.log(`[${now}] Successfully deleted ${deletedCount} expired keys`);
+    
     return new Response(
-      JSON.stringify({ success: true, message: 'Expired keys cleaned up successfully' }),
+      JSON.stringify({ 
+        success: true, 
+        message: `Expired keys cleaned up successfully. Deleted ${deletedCount} keys.`,
+        deletedCount
+      }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 200 
@@ -34,10 +49,11 @@ Deno.serve(async (req) => {
     );
     
   } catch (error) {
-    console.error('Error cleaning up expired keys:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Error cleaning up expired keys:', errorMessage);
     
     return new Response(
-      JSON.stringify({ success: false, error: error.message }),
+      JSON.stringify({ success: false, error: errorMessage }),
       { 
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
         status: 500

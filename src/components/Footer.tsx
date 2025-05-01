@@ -3,41 +3,44 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  // Check if dark mode is enabled
+  const isDarkMode = document.documentElement.classList.contains("dark");
+
   return (
-    <footer className="bg-sorin-dark border-t border-sorin-accent/10 py-12">
+    <footer className="bg-white dark:bg-sorin-dark border-t border-gray-200 dark:border-sorin-accent/10 py-12 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
-            <span className="text-xl font-bold text-sorin-highlight sorin-glow">SORIN</span>
-            <p className="mt-2 text-sm text-sorin-muted">
+            <span className="text-xl font-bold text-purple-700 dark:text-sorin-highlight dark:sorin-glow">SORIN</span>
+            <p className="mt-2 text-sm text-gray-600 dark:text-sorin-muted">
               Die Zukunft des Exploitings. Jetzt.
             </p>
           </div>
           
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4">
-            <Link to="/" className="text-sm text-sorin-muted hover:text-sorin-accent">
+            <Link to="/" className="text-sm text-gray-600 hover:text-purple-700 dark:text-sorin-muted dark:hover:text-sorin-accent">
               Home
             </Link>
-            <Link to="/features" className="text-sm text-sorin-muted hover:text-sorin-accent">
+            <Link to="/features" className="text-sm text-gray-600 hover:text-purple-700 dark:text-sorin-muted dark:hover:text-sorin-accent">
               Features
             </Link>
-            <Link to="/faq" className="text-sm text-sorin-muted hover:text-sorin-accent">
+            <Link to="/faq" className="text-sm text-gray-600 hover:text-purple-700 dark:text-sorin-muted dark:hover:text-sorin-accent">
               FAQ
             </Link>
-            <Link to="/terms" className="text-sm text-sorin-muted hover:text-sorin-accent">
+            <Link to="/terms" className="text-sm text-gray-600 hover:text-purple-700 dark:text-sorin-muted dark:hover:text-sorin-accent">
               Terms
             </Link>
-            <Link to="/privacy" className="text-sm text-sorin-muted hover:text-sorin-accent">
+            <Link to="/privacy" className="text-sm text-gray-600 hover:text-purple-700 dark:text-sorin-muted dark:hover:text-sorin-accent">
               Privacy
             </Link>
           </div>
         </div>
         
-        <div className="mt-8 pt-8 border-t border-sorin-accent/10 flex flex-col sm:flex-row justify-between items-center">
-          <p className="text-xs text-sorin-muted">
+        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-sorin-accent/10 flex flex-col sm:flex-row justify-between items-center">
+          <p className="text-xs text-gray-500 dark:text-sorin-muted">
             &copy; {new Date().getFullYear()} Sorin. Alle Rechte vorbehalten.
           </p>
-          <p className="text-xs text-sorin-muted mt-4 sm:mt-0">
+          <p className="text-xs text-gray-500 dark:text-sorin-muted mt-4 sm:mt-0">
             Designed für die Elite
           </p>
         </div>

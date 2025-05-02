@@ -7,6 +7,17 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { AlertCircle, Check, Copy } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
+
+// Define a type for our key container
+type KeyContainer = {
+  id: string;
+  name: string;
+  image_url: string | null;
+  redirect_url: string;
+  active: boolean;
+  position: number;
+}
 
 const GetKeyPage = () => {
   const [searchParams] = useSearchParams();
@@ -21,10 +32,12 @@ const GetKeyPage = () => {
   const [lastRequestTime, setLastRequestTime] = useState(Date.now());
   const [copied, setCopied] = useState(false);
   const [isBlacklisted, setIsBlacklisted] = useState(false);
+  const [containers, setContainers] = useState<KeyContainer[]>([]);
+  const [isLoadingContainers, setIsLoadingContainers] = useState(true);
 
   const navigate = useNavigate();
 
-  // Check for blacklist status as soon as the component mounts
+  // Check for blacklist status and load containers as soon as the component mounts
   useEffect(() => {
     const checkBlacklistStatus = async () => {
       try {
@@ -44,7 +57,30 @@ const GetKeyPage = () => {
       }
     };
     
+    const loadContainers = async () => {
+      try {
+        setIsLoadingContainers(true);
+        const { data, error } = await supabase
+          .from('key_containers')
+          .select('*')
+          .eq('active', true)
+          .order('position', { ascending: true });
+        
+        if (error) {
+          throw error;
+        }
+        
+        setContainers(data || []);
+      } catch (err) {
+        console.error("Error loading containers:", err);
+        toast.error("Fehler beim Laden der Container");
+      } finally {
+        setIsLoadingContainers(false);
+      }
+    };
+    
     checkBlacklistStatus();
+    loadContainers();
   }, []);
 
   const copyToClipboard = (textToCopy: string) => {
@@ -154,18 +190,18 @@ const GetKeyPage = () => {
     }
   };
 
-  const redirectToLinkvertise = (newKey: string) => {
+  const redirectToLink = async (redirectUrl: string, newKey: string) => {
     // Generate the URL that users will be redirected to after Linkvertise
-    const redirectUrl = `${window.location.origin}/keyredirect/${newKey}`;
+    const redirectBackUrl = `${window.location.origin}/keyredirect/${newKey}`;
     
-    // Use the actual Linkvertise URL provided by the user
-    const linkvertiseUrl = `https://link-target.net/1345492/sorin-key1?r=${encodeURIComponent(redirectUrl)}`;
+    // Create the final URL with the redirect parameter
+    const finalUrl = `${redirectUrl}?r=${encodeURIComponent(redirectBackUrl)}`;
     
-    // Redirect to Linkvertise
-    window.location.href = linkvertiseUrl;
+    // Redirect to the link
+    window.location.href = finalUrl;
   };
 
-  const handleGenerateKey = async () => {
+  const handleGenerateKey = async (redirectUrl: string) => {
     setIsLoading(true);
     
     try {
@@ -232,8 +268,8 @@ const GetKeyPage = () => {
         // Use existing key
         setKey(existingKey);
         toast.success("Bestehender Key gefunden!");
-        // Redirect to Linkvertise with the existing key
-        redirectToLinkvertise(existingKey);
+        // Redirect with the existing key
+        redirectToLink(redirectUrl, existingKey);
       } else {
         // Get location data
         const location = ip ? await getLocationFromIP(ip) : "Unknown";
@@ -264,8 +300,8 @@ const GetKeyPage = () => {
         setKey(newKey);
         toast.success("Key wurde erfolgreich generiert");
         
-        // Redirect to Linkvertise with the new key
-        redirectToLinkvertise(newKey);
+        // Redirect with the new key
+        redirectToLink(redirectUrl, newKey);
       }
       
       // Update phase
@@ -352,22 +388,47 @@ const GetKeyPage = () => {
                     Wähle bitte eine der folgenden Methoden aus, um deinen Schlüssel zu erhalten.
                   </p>
                 </div>
-                <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md">
-                  <Button 
-                    onClick={handleGenerateKey} 
-                    disabled={isLoading}
-                    className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight flex justify-between items-center gap-4 p-6 w-full h-24"
-                  >
-                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
-                      <div className="text-sm text-gray-500 dark:text-gray-400">Logo</div>
-                    </div>
-                    <div className="flex-1 text-left">
-                      <span className="block font-medium text-lg">
-                        {isLoading ? "Generiere Key..." : "Container"}
-                      </span>
-                    </div>
-                  </Button>
-                </div>
+
+                {isLoadingContainers ? (
+                  <div className="space-y-4 w-full max-w-md">
+                    <Skeleton className="h-24 w-full bg-gray-200 dark:bg-sorin-primary/40" />
+                    <Skeleton className="h-24 w-full bg-gray-200 dark:bg-sorin-primary/40" />
+                  </div>
+                ) : containers.length > 0 ? (
+                  <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md w-full space-y-4">
+                    {containers.map((container) => (
+                      <Button 
+                        key={container.id}
+                        onClick={() => handleGenerateKey(container.redirect_url)}
+                        disabled={isLoading}
+                        className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight flex justify-between items-center gap-4 p-6 w-full h-24"
+                      >
+                        <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center overflow-hidden">
+                          {container.image_url ? (
+                            <img 
+                              src={container.image_url} 
+                              alt={`${container.name} logo`} 
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="text-sm text-gray-500 dark:text-gray-400">Logo</div>
+                          )}
+                        </div>
+                        <div className="flex-1 text-left">
+                          <span className="block font-medium text-lg">
+                            {isLoading ? "Generiere Key..." : container.name}
+                          </span>
+                        </div>
+                      </Button>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md">
+                    <p className="text-gray-700 dark:text-sorin-text">
+                      Derzeit sind keine Key-Generierungs-Optionen verfügbar. Bitte versuche es später erneut.
+                    </p>
+                  </div>
+                )}
               </>
             )}
 

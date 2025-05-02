@@ -122,6 +122,39 @@ export type Database = {
         }
         Relationships: []
       }
+      key_containers: {
+        Row: {
+          active: boolean | null
+          created_at: string | null
+          id: string
+          image_url: string | null
+          name: string
+          position: number | null
+          redirect_url: string
+          updated_at: string | null
+        }
+        Insert: {
+          active?: boolean | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          position?: number | null
+          redirect_url: string
+          updated_at?: string | null
+        }
+        Update: {
+          active?: boolean | null
+          created_at?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          position?: number | null
+          redirect_url?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       keys: {
         Row: {
           blacklisted: boolean | null

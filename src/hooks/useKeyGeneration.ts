@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,14 +23,8 @@ export const useKeyGeneration = () => {
 
   // Function to handle redirection to the link
   const redirectToLink = async (redirectUrl: string, newKey: string) => {
-    // Generate the URL that users will be redirected to after Linkvertise
-    const redirectBackUrl = `${window.location.origin}/keyredirect/${newKey}`;
-    
-    // Create the final URL with the redirect parameter
-    const finalUrl = `${redirectUrl}?r=${encodeURIComponent(redirectBackUrl)}`;
-    
-    // Redirect to the link
-    window.location.href = finalUrl;
+    // Instead of using linkvertise, redirect directly to keygen with the key
+    window.location.href = `/keygen/${newKey}`;
   };
 
   const handleGenerateKey = async (redirectUrl: string = "https://link-target.net/1345492/sorin-key1") => {

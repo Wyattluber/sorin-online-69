@@ -42,7 +42,7 @@ const GetKeyPage = () => {
           
           if (blacklistReason) {
             setIsBlacklisted(true);
-            setPhase("blocked" as KeyPhase);
+            setPhase("blocked");
             setError(`Zugriff verweigert: ${blacklistReason}`);
           }
         }

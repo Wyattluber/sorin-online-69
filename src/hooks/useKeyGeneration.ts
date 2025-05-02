@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -10,10 +11,12 @@ import {
   saveNewKey,
 } from "@/utils/keyUtils";
 
+export type KeyPhase = "start" | "waiting" | "done" | "blocked";
+
 export const useKeyGeneration = () => {
   const [key, setKey] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [phase, setPhase] = useState<"start" | "waiting" | "done" | "blocked">("start");
+  const [phase, setPhase] = useState<KeyPhase>("start");
   const [isLoading, setIsLoading] = useState(false);
   const [requestCount, setRequestCount] = useState(0);
   const [lastRequestTime, setLastRequestTime] = useState(Date.now());

@@ -78,7 +78,7 @@
   }
 
   body.dark {
-    background-image: radial-gradient(circle at 20% 20%, #1E293B 0%, #01020c 100%);
+    background-image: linear-gradient(to bottom, #01020c, #43087d);
     background-attachment: fixed;
   }
   

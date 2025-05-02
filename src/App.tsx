@@ -15,7 +15,6 @@ import Terms from "./pages/Terms";
 import GetKeyPage from "./pages/getkey";
 import KeyDisplay from "./pages/KeyDisplay";
 import KeyRedirect from "./pages/KeyRedirect";
-import KeyGenPage from "./pages/KeyGenPage";
 
 const queryClient = new QueryClient();
 
@@ -31,8 +30,6 @@ const App = () => (
           <Route path="/getkey" element={<GetKeyPage />} />
           <Route path="/keydisplay/:key" element={<KeyDisplay />} />
           <Route path="/keyredirect/:key" element={<KeyRedirect />} />
-          <Route path="/keygen" element={<KeyGenPage />} />
-          <Route path="/keygen/:key" element={<KeyGenPage />} />
           <Route path="/game/:id" element={<GameDetails />} />
           <Route path="/features" element={<FeaturesPage />} />
           <Route path="/faq" element={<FAQPage />} />

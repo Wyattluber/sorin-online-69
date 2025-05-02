@@ -33,7 +33,7 @@ const KeyDisplay = () => {
   return (
     <>
       <NavBar />
-      <main className="flex flex-col items-center justify-center p-6 min-h-[75vh] text-center">
+      <main className="flex flex-col items-center justify-center p-6 min-h-[75vh] text-center bg-gradient-to-b from-white to-gray-100 dark:from-sorin-dark dark:to-[#131b2e] transition-colors duration-500">
         <h1 className="text-3xl font-bold mb-4">Dein Key wurde generiert</h1>
         
         <Alert className="mb-6 max-w-md">

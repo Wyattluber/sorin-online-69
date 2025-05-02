@@ -20,7 +20,7 @@ const KeyGenPage = () => {
   }, [key, navigate]);
   
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-sorin-dark dark:to-[#131b2e] transition-colors duration-500">
       <NavBar />
       <main className="flex flex-col items-center justify-center p-6 flex-grow">
         <div className="text-center">

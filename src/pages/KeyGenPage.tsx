@@ -1,37 +1,42 @@
 
 import React, { useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import NavBar from "@/components/NavBar";
-import Footer from "@/components/Footer";
+import { useNavigate, useParams } from "react-router-dom";
+import useKeyGeneration from "@/hooks/useKeyGeneration";
+import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 
 const KeyGenPage = () => {
-  const { key } = useParams<{ key?: string }>();
+  const { handleGenerateKey, isLoading, key } = useKeyGeneration();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   
   useEffect(() => {
-    // If we have a key, redirect directly to the key display page
-    if (key) {
-      navigate(`/keydisplay/${key}`);
-    } else {
-      // If no key is provided, redirect to getkey page
+    // If we have a key from direct navigation, redirect to the key display page
+    if (id) {
+      navigate(`/keydisplay/${id}`);
+    }
+    // If we have a key from generation, it means we need to redirect through linkvertise
+    else if (!id && !key && !isLoading) {
+      // Redirect to getkey if someone directly navigates to /keygen without a key
       navigate('/getkey');
     }
-  }, [key, navigate]);
-  
+  }, [id, key, navigate, isLoading]);
+
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-sorin-dark dark:to-[#131b2e] transition-colors duration-500">
-      <NavBar />
-      <main className="flex flex-col items-center justify-center p-6 flex-grow">
-        <div className="text-center">
-          <Loader2 className="h-16 w-16 mx-auto animate-spin text-purple-600 dark:text-sorin-accent" />
-          <h1 className="text-2xl font-semibold mt-6">Verarbeite deinen Key...</h1>
-          <p className="mt-2 text-gray-600 dark:text-sorin-muted">
-            Du wirst automatisch weitergeleitet.
-          </p>
-        </div>
-      </main>
-      <Footer />
+    <div className="min-h-screen flex items-center justify-center bg-zinc-900 text-white p-4">
+      <div className="text-center">
+        {isLoading ? (
+          <div className="flex flex-col items-center space-y-4">
+            <Loader2 className="animate-spin h-12 w-12" />
+            <p className="text-lg">Generiere deinen Key...</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            <h1 className="text-3xl font-bold">Key Generator</h1>
+            <p className="text-lg">Du wirst weitergeleitet...</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

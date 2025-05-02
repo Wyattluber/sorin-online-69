@@ -7,7 +7,7 @@ import Footer from "@/components/Footer";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useKeyContainers } from "@/hooks/useKeyContainers";
-import { useKeyGeneration, KeyPhase } from "@/hooks/useKeyGeneration";
+import useKeyGeneration, { KeyPhase } from "@/hooks/useKeyGeneration";
 import { getIPAddress, checkBlacklist } from "@/utils/keyUtils";
 import BlockedState from "@/components/key/BlockedState";
 import KeyContainer from "@/components/key/KeyContainer";

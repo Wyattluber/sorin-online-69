@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
@@ -341,24 +340,29 @@ const GetKeyPage = () => {
 
             {phase === "start" && (
               <>
-                <p className="mb-6 text-gray-700 dark:text-sorin-text">
-                  Du bekommst einen Key, gültig für 1 Stunde.
-                </p>
-                <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md">
-                  <p className="mb-4 text-gray-800 dark:text-sorin-text">
-                    Klicke auf den Container, um deinen persönlichen Key zu generieren.
+                <div className="max-w-lg mb-8 text-left">
+                  <p className="mb-4 text-gray-700 dark:text-sorin-text">
+                    Willkommen beim Sorin-Zugriffsportal
                   </p>
+                  <p className="mb-4 text-gray-700 dark:text-sorin-text">
+                    Hier kannst du einen temporären Zugangsschlüssel generieren, der dir testweise Zugriff auf Sorin gewährt.
+                    Dein persönlicher Key bleibt für 1 Stunde aktiv, nachdem er erstellt wurde.
+                  </p>
+                  <p className="mb-6 text-gray-700 dark:text-sorin-text">
+                    Wähle bitte eine der folgenden Methoden aus, um deinen Schlüssel zu erhalten.
+                  </p>
+                </div>
+                <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md">
                   <Button 
                     onClick={handleGenerateKey} 
                     disabled={isLoading}
-                    className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight flex justify-between items-center gap-4 p-4 w-full"
+                    className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight flex justify-between items-center gap-4 p-6 w-full h-24"
                   >
-                    <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
-                      {/* Placeholder for Linkvertise logo */}
-                      <div className="text-xs text-gray-500 dark:text-gray-400">Logo</div>
+                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
+                      <div className="text-sm text-gray-500 dark:text-gray-400">Logo</div>
                     </div>
                     <div className="flex-1 text-left">
-                      <span className="block font-medium">
+                      <span className="block font-medium text-lg">
                         {isLoading ? "Generiere Key..." : "Container"}
                       </span>
                     </div>

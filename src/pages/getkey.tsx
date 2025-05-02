@@ -42,7 +42,7 @@ const GetKeyPage = () => {
           
           if (blacklistReason) {
             setIsBlacklisted(true);
-            setPhase("blocked");
+            setPhase("blocked" as KeyPhase);
             setError(`Zugriff verweigert: ${blacklistReason}`);
           }
         }
@@ -59,12 +59,14 @@ const GetKeyPage = () => {
       <NavBar />
       <main className="flex flex-col items-center justify-center p-6 flex-grow text-center mt-16">
         {/* If blacklisted, show denied access page */}
-        {phase === "blocked" ? (
+        {phase === "blocked" && (
           <BlockedState error={error} />
-        ) : status === "success" && keyParam ? (
+        )}
+        
+        {status === "success" && keyParam ? (
           // If we're on the key display page (accessed via URL with status and key params)
           <KeySuccessState keyParam={keyParam} />
-        ) : (
+        ) : phase !== "blocked" && (
           // Default view - key generation form
           <>
             <h1 className="text-3xl font-bold mb-4">Sichere dir deinen persönlichen Key</h1>

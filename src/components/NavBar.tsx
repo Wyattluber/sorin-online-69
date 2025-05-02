@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -56,8 +55,13 @@ const NavBar = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
           <div className="flex-shrink-0 flex items-center">
-            <Link to="/" className={`text-xl font-bold ${isDark ? "text-sorin-highlight" : "text-purple-700"} transition-colors duration-300`}>
-              <span className={isDark ? "gradient-text" : ""}>SORIN</span>
+            <Link to="/" className={`text-xl font-bold transition-colors duration-300`}>
+              <span className={`${isDark 
+                ? "text-transparent bg-gradient-to-r from-sorin-accent via-purple-400 to-blue-400 bg-clip-text drop-shadow-[0_0_8px_rgba(139,92,246,0.6)]" 
+                : "text-transparent bg-gradient-to-r from-purple-700 to-indigo-600 bg-clip-text drop-shadow-[0_0_3px_rgba(139,92,246,0.4)]"
+              } font-extrabold tracking-wider`}>
+                SORIN
+              </span>
             </Link>
           </div>
 

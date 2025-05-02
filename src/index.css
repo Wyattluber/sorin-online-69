@@ -74,6 +74,7 @@
 
   body {
     @apply bg-background text-foreground transition-colors duration-500;
+    background-image: linear-gradient(to bottom, rgba(255,255,255,0), rgba(237,233,254,0.3));
   }
 
   body.dark {
@@ -103,6 +104,10 @@
   .sorin-section {
     @apply relative z-10 py-16 overflow-hidden;
   }
+  
+  .sorin-logo-glow {
+    @apply drop-shadow-[0_0_8px_rgba(139,92,246,0.6)];
+  }
 }
 
 @keyframes float {
@@ -126,4 +131,14 @@
 
 .theme-transition {
   animation: theme-fade 0.5s ease-in-out;
+}
+
+/* Enhanced logo glow effect */
+.sorin-logo {
+  @apply relative;
+}
+
+.sorin-logo::after {
+  content: '';
+  @apply absolute inset-0 bg-sorin-accent/20 blur-xl opacity-75 -z-10;
 }

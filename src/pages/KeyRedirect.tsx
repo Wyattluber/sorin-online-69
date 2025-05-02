@@ -53,11 +53,11 @@ const KeyRedirect = () => {
               
               // Check if the user has spent enough time or came from Linkvertise
               const timeSpent = Date.now() - arrivalTime;
-              const cameFromLinkvertise = referrer && referrer.includes('link-target.net');
+              const cameFromLinkvertise = referrer && (referrer.includes('link-target.net') || referrer.includes('link-hub.net'));
               
               if (timeSpent >= 8000 || cameFromLinkvertise) {
                 // Redirect to the key display page after validation
-                navigate(`/keygen/${key}`);
+                navigate(`/keydisplay/${key}`);
               } else {
                 setError("Du hast die Werbung übersprungen. Bitte gehe zurück und folge dem korrekten Prozess.");
                 setIsValidating(false);

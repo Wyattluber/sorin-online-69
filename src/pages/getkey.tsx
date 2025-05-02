@@ -343,7 +343,7 @@ const GetKeyPage = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-white to-gray-100 dark:from-sorin-dark dark:to-[#131b2e] transition-colors duration-500">
       <NavBar />
       <main className="flex flex-col items-center justify-center p-6 flex-grow text-center mt-16">
         {/* If blacklisted, show denied access page */}
@@ -426,17 +426,17 @@ const GetKeyPage = () => {
                         key={container.id}
                         onClick={() => handleGenerateKey(container.redirect_url)}
                         disabled={isLoading}
-                        className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight flex justify-between items-center gap-4 p-6 w-full h-24"
+                        className="bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 dark:from-sorin-accent dark:to-sorin-accent/80 dark:text-sorin-dark dark:hover:from-sorin-highlight dark:hover:to-sorin-highlight/90 flex justify-between items-center gap-4 p-6 w-full h-24"
                       >
-                        <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center overflow-hidden">
+                        <div className="w-16 h-16 flex items-center justify-center overflow-hidden">
                           {container.image_url ? (
                             <img 
                               src={container.image_url} 
                               alt={`${container.name} logo`} 
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-contain"
                             />
                           ) : (
-                            <div className="text-sm text-gray-500 dark:text-gray-400">Logo</div>
+                            <div className="text-sm text-gray-100 dark:text-sorin-dark/70">Logo</div>
                           )}
                         </div>
                         <div className="flex-1 text-left">

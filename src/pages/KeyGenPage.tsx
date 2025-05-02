@@ -2,28 +2,30 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useKeyGeneration from "@/hooks/useKeyGeneration";
-import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const KeyGenPage = () => {
-  const { handleGenerateKey, isLoading, key } = useKeyGeneration();
-  const { id } = useParams<{ id: string }>();
+  const { isLoading, key } = useKeyGeneration();
+  const { key: keyParam } = useParams<{ key: string }>();
   const navigate = useNavigate();
   
   useEffect(() => {
     // If we have a key from direct navigation, redirect to the key display page
-    if (id) {
-      navigate(`/keydisplay/${id}`);
+    if (keyParam) {
+      navigate(`/keydisplay/${keyParam}`);
+      return;
     }
-    // If we have a key from generation, it means we need to redirect through linkvertise
-    else if (!id && !key && !isLoading) {
-      // Redirect to getkey if someone directly navigates to /keygen without a key
+
+    // If someone navigates directly to this page without going through Linkvertise
+    if (!keyParam && !key && !isLoading) {
+      toast.error("Bitte generiere zuerst einen Key.");
       navigate('/getkey');
     }
-  }, [id, key, navigate, isLoading]);
+  }, [keyParam, key, navigate, isLoading]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-zinc-900 text-white p-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sorin-dark to-[#131b2e] text-white p-4">
       <div className="text-center">
         {isLoading ? (
           <div className="flex flex-col items-center space-y-4">

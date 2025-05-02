@@ -40,3 +40,4 @@ verify_jwt = false
 
 [edge_functions.create-get-key-containers-function]
 verify_jwt = false
+

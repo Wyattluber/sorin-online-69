@@ -28,20 +28,16 @@ serve(async (req) => {
       }
     );
 
-    // Check if the key_containers table exists
-    const { data, error } = await supabaseClient
+    // First try to query the key_containers table directly
+    const { data: directData, error: directError } = await supabaseClient
       .from('key_containers')
       .select('*')
       .eq('active', true)
       .order('position', { ascending: true });
-
-    if (error) {
-      // If the table doesn't exist or there's another issue
-      console.error("Error fetching key containers:", error);
       
-      // Return empty array rather than an error
+    if (!directError && directData && directData.length > 0) {
       return new Response(
-        JSON.stringify({ data: [] }),
+        JSON.stringify({ data: directData }),
         { 
           headers: { 
             'Content-Type': 'application/json',
@@ -52,9 +48,26 @@ serve(async (req) => {
       );
     }
 
-    // Return the data
+    // If direct query fails or returns empty, try using the SQL function
+    const { data: functionData, error: functionError } = await supabaseClient
+      .rpc('get_key_containers');
+      
+    if (!functionError && functionData) {
+      return new Response(
+        JSON.stringify({ data: functionData }),
+        { 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders
+          },
+          status: 200 
+        }
+      );
+    }
+
+    // If both approaches fail, return an empty array
     return new Response(
-      JSON.stringify({ data }),
+      JSON.stringify({ data: [] }),
       { 
         headers: { 
           'Content-Type': 'application/json',
@@ -67,7 +80,7 @@ serve(async (req) => {
     console.error(error);
     
     return new Response(
-      JSON.stringify({ error: 'Internal Server Error' }),
+      JSON.stringify({ error: 'Internal Server Error', data: [] }),
       { 
         headers: { 
           'Content-Type': 'application/json',

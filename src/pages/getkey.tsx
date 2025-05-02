@@ -61,33 +61,39 @@ const GetKeyPage = () => {
       try {
         setIsLoadingContainers(true);
         
-        // Use raw SQL query instead of table access to avoid type errors
-        // This will work regardless of the TypeScript definitions
-        const { data, error } = await supabase
-          .rpc('get_key_containers')
-          .catch(() => {
-            // If the function doesn't exist yet, just return an empty result
-            console.warn("The get_key_containers function doesn't exist yet");
-            return { data: null, error: new Error("Function not available") };
-          });
-        
-        if (error) {
-          console.error("Error loading containers:", error);
-          // If the RPC function fails, try a direct query with any type
-          const { data: rawData, error: rawError } = await supabase
-            .from('key_containers' as any)
+        // First try to fetch containers directly from a regular table query
+        try {
+          const { data: directData, error: directError } = await supabase
+            .from('key_containers')
             .select('*')
             .eq('active', true)
             .order('position', { ascending: true });
             
-          if (rawError) {
-            console.error("Fallback query failed:", rawError);
-            setContainers([]);
-          } else {
-            setContainers(rawData as unknown as KeyContainer[] || []);
+          if (!directError && directData && directData.length > 0) {
+            setContainers(directData as KeyContainer[]);
+            setIsLoadingContainers(false);
+            return;
           }
-        } else {
-          setContainers(data as unknown as KeyContainer[] || []);
+        } catch (err) {
+          console.log("Direct table access failed, trying edge function:", err);
+        }
+        
+        // If direct query fails, try the edge function
+        try {
+          const { data: functionData, error: functionError } = await supabase
+            .functions.invoke('get-key-containers');
+            
+          if (functionError) {
+            console.error("Edge function error:", functionError);
+            setContainers([]);
+          } else if (functionData?.data) {
+            setContainers(functionData.data as KeyContainer[]);
+          } else {
+            setContainers([]);
+          }
+        } catch (err) {
+          console.error("Edge function call failed:", err);
+          setContainers([]);
         }
       } catch (err) {
         console.error("Error loading containers:", err);

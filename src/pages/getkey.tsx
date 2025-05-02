@@ -346,18 +346,23 @@ const GetKeyPage = () => {
                 </p>
                 <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md">
                   <p className="mb-4 text-gray-800 dark:text-sorin-text">
-                    Um deinen Key zu generieren, musst du einen kurzen Werbeartikel anschauen.
+                    Klicke auf den Container, um deinen persönlichen Key zu generieren.
                   </p>
                   <Button 
                     onClick={handleGenerateKey} 
                     disabled={isLoading}
-                    className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight"
+                    className="bg-purple-600 hover:bg-purple-700 dark:bg-sorin-accent dark:text-sorin-dark dark:hover:bg-sorin-highlight flex justify-between items-center gap-4 p-4 w-full"
                   >
-                    {isLoading ? "Generiere Key..." : "Key generieren"}
+                    <div className="w-12 h-12 bg-gray-200 dark:bg-gray-700 rounded flex items-center justify-center">
+                      {/* Placeholder for Linkvertise logo */}
+                      <div className="text-xs text-gray-500 dark:text-gray-400">Logo</div>
+                    </div>
+                    <div className="flex-1 text-left">
+                      <span className="block font-medium">
+                        {isLoading ? "Generiere Key..." : "Container"}
+                      </span>
+                    </div>
                   </Button>
-                  <p className="mt-4 text-xs text-gray-500 dark:text-sorin-muted">
-                    Nach der Werbung wirst du automatisch zu deinem Key weitergeleitet.
-                  </p>
                 </div>
               </>
             )}

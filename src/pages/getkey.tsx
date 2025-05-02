@@ -415,12 +415,12 @@ const GetKeyPage = () => {
                 </div>
 
                 {isLoadingContainers ? (
-                  <div className="space-y-4 w-full max-w-md">
+                  <div className="space-y-4 w-full max-w-md mx-auto">
                     <Skeleton className="h-24 w-full bg-gray-200 dark:bg-sorin-primary/40" />
                     <Skeleton className="h-24 w-full bg-gray-200 dark:bg-sorin-primary/40" />
                   </div>
                 ) : containers.length > 0 ? (
-                  <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 max-w-md w-full space-y-4">
+                  <div className="bg-white dark:bg-sorin-primary p-6 rounded-lg shadow-md border border-gray-200 dark:border-sorin-accent/30 w-full md:w-[70%] max-w-lg mx-auto space-y-4">
                     {containers.map((container) => (
                       <Button 
                         key={container.id}
@@ -428,7 +428,7 @@ const GetKeyPage = () => {
                         disabled={isLoading}
                         className="bg-gradient-to-r from-purple-500 to-purple-700 hover:from-purple-600 hover:to-purple-800 dark:from-sorin-accent dark:to-sorin-accent/80 dark:text-sorin-dark dark:hover:from-sorin-highlight dark:hover:to-sorin-highlight/90 flex justify-between items-center gap-4 p-6 w-full h-24"
                       >
-                        <div className="w-16 h-16 flex items-center justify-center overflow-hidden">
+                        <div className="w-16 h-16 flex items-center justify-center overflow-hidden bg-transparent">
                           {container.image_url ? (
                             <img 
                               src={container.image_url} 

@@ -10,9 +10,9 @@ const KeyGenPage = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // If we have a key, redirect to the key redirect page
+    // If we have a key, redirect to the key display page
     if (key) {
-      navigate(`/keyredirect/${key}`);
+      navigate(`/keydisplay/${key}`);
     } else {
       // If no key is provided, redirect to getkey page
       navigate('/getkey');

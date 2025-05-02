@@ -11,7 +11,7 @@ const Footer = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-6 md:mb-0">
-            <span className="text-xl font-bold text-purple-700 dark:text-sorin-highlight dark:sorin-glow">SORIN</span>
+            <span className="text-xl font-bold text-transparent bg-gradient-to-r from-purple-700 to-indigo-600 bg-clip-text drop-shadow-[0_0_3px_rgba(139,92,246,0.4)] dark:text-transparent dark:bg-gradient-to-r dark:from-sorin-accent dark:via-purple-400 dark:to-blue-400 dark:bg-clip-text dark:drop-shadow-[0_0_8px_rgba(139,92,246,0.6)] dark:sorin-glow">SORIN</span>
             <p className="mt-2 text-sm text-gray-600 dark:text-sorin-muted">
               Die Zukunft des Exploitings. Jetzt.
             </p>

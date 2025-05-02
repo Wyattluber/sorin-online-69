@@ -31,22 +31,15 @@ const Hero = () => {
       
       {/* Gradient Overlays */}
       <div className="absolute inset-0 bg-gradient-radial from-sorin-accent/5 to-transparent z-1"></div>
-      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-sorin-dark to-transparent z-1"></div>
+      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-[#01020c] to-transparent z-1"></div>
       
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        {/*<h1 className="text-4xl sm:text-5xl md:text-6xl font-bold text-sorin-highlight sorin-glow mb-6">
-          SORIN
-        </h1>*/}
-        
         <div className="inline-block bg-white/5 backdrop-blur-[1px] rounded-md px-5 py-3">
           <p className="text-lg sm:text-xl font-medium text-sorin-text/90">
           Das intergalaktische <span className="text-sorin-highlight">Roblox-Exploiting-Script</span>
         </p>
        </div>
 
-
-
-        
         <div className="mt-10 flex justify-center">
           <a href="#games" className="flex items-center gap-2 bg-sorin-accent/20 hover:bg-sorin-accent/40 transition-colors px-4 py-2 rounded-md text-sorin-text">
             <span>Unterstützte Spiele entdecken</span>

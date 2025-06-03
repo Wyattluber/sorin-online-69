@@ -1,10 +1,9 @@
-
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { generateRandomKey } from "@/utils/keyUtils";
 
-// Define a KeyPhase type to be exported
+// Define a KeyPhase type to be exported - now includes "blocked"
 export type KeyPhase = "start" | "waiting" | "blocked";
 
 export default function useKeyGeneration() {

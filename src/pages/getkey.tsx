@@ -23,8 +23,8 @@ const GetKeyPage = () => {
             Willkommen beim Sorin-Zugriffsportal
           </p>
           <p className="mb-4 text-gray-700 dark:text-sorin-text">
-            Hier kannst du einen temporären Zugangsschlüssel generieren, der dir testweise Zugriff auf Sorin gewährt.
-            Dein persönlicher Key bleibt für 1 Stunde aktiv, nachdem er erstellt wurde.
+            Hier kannst du einen temporären Zugangsschlüssel generieren, der dir Zugriff auf unseren Script gewährt.
+            Der Key bleibt für 12 Stunde aktiv, nachdem er erstellt wurde.
           </p>
           <p className="mb-6 text-gray-700 dark:text-sorin-text">
             Wähle bitte eine der folgenden Methoden aus, um deinen Schlüssel zu erhalten.

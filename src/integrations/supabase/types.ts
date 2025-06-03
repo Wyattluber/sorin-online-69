@@ -9,48 +9,6 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      blacklist: {
-        Row: {
-          created_at: string | null
-          hwid: string
-          id: number
-          ip_address: string | null
-          reason: string | null
-        }
-        Insert: {
-          created_at?: string | null
-          hwid: string
-          id?: number
-          ip_address?: string | null
-          reason?: string | null
-        }
-        Update: {
-          created_at?: string | null
-          hwid?: string
-          id?: number
-          ip_address?: string | null
-          reason?: string | null
-        }
-        Relationships: []
-      }
-      executions: {
-        Row: {
-          count: number
-          id: number
-          updated_at: string
-        }
-        Insert: {
-          count?: number
-          id?: number
-          updated_at?: string
-        }
-        Update: {
-          count?: number
-          id?: number
-          updated_at?: string
-        }
-        Relationships: []
-      }
       feedback: {
         Row: {
           created_at: string
@@ -155,55 +113,12 @@ export type Database = {
         }
         Relationships: []
       }
-      keys: {
-        Row: {
-          blacklisted: boolean | null
-          created_at: string | null
-          device_location: string | null
-          expires_at: string | null
-          hwid: string | null
-          id: number
-          ip_adress: string | null
-          key: string
-          used: boolean | null
-        }
-        Insert: {
-          blacklisted?: boolean | null
-          created_at?: string | null
-          device_location?: string | null
-          expires_at?: string | null
-          hwid?: string | null
-          id?: number
-          ip_adress?: string | null
-          key?: string
-          used?: boolean | null
-        }
-        Update: {
-          blacklisted?: boolean | null
-          created_at?: string | null
-          device_location?: string | null
-          expires_at?: string | null
-          hwid?: string | null
-          id?: number
-          ip_adress?: string | null
-          key?: string
-          used?: boolean | null
-        }
-        Relationships: []
-      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      create_executions_table: {
-        Args: Record<PropertyKey, never>
-        Returns: undefined
-      }
-      increment_execution_counter: {
-        Args: { key_value: string }
-        Returns: undefined
-      }
+      [_ in never]: never
     }
     Enums: {
       [_ in never]: never

@@ -3,7 +3,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
-// Define container type from the getkey page
 export type KeyContainer = {
   id: string;
   name: string;
@@ -62,7 +61,7 @@ const KeyContainer = ({ containers, isLoading, onSelectContainer, isGeneratingKe
           </div>
           <div className="flex-1 text-left">
             <span className="block font-medium text-lg">
-              {isGeneratingKey ? "Generiere Key..." : container.name}
+              {container.name}
             </span>
           </div>
         </Button>
